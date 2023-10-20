@@ -305,8 +305,19 @@
                     </ul>
                     <ul class="wsus__menu_item wsus__menu_item_right">
                         <li><a href="contact.html">contact</a></li>
-                        <li><a href="dsahboard.html">my account</a></li>
-                        <li><a href="login.html">login</a></li>
+
+                        @auth()
+                            <li><a href="{{ route('user.dashboard') }}">my account</a></li>
+
+                            <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault();this.closest('form').submit();">{{ __('Log Out') }}</a>
+                            </form>
+                            </li>
+                        @else
+                            <li><a href="{{ route('login') }}">log in</a></li>
+                        @endauth
                     </ul>
                 </div>
             </div>

@@ -1,52 +1,88 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('frontend.layouts.master')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+@section('main-content')
+    <section id="wsus__breadcrumb">
+        <div class="wsus_breadcrumb_overlay">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>login / sign up</h4>
+                        <ul>
+                            <li><a href="/">home</a></li>
+                            <li><a href="#">sign up</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <section id="wsus__login_register">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-5 m-auto">
+                    <div class="wsus__login_reg_area">
+                        <ul class="nav nav-pills mb-3" id="pills-tab2" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a href="{{ route('login') }}" class="nav-link">login</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-profile-tab2" data-bs-toggle="pill"
+                                        data-bs-target="#pills-profiles" type="button" role="tab"
+                                        aria-controls="pills-profiles" aria-selected="true">signup</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent2">
+                            <div class="tab-pane fade show active" id="pills-profiles" role="tabpanel"
+                                 aria-labelledby="pills-profile-tab2">
+                                <div class="wsus__login">
+                                    <form method="POST" action="{{ route('register') }}">
+                                        @csrf
+
+                                        <div class="wsus__login_input">
+                                            <i class="fas fa-user-tie"></i>
+                                            <input type="text" name="name" id="name" required autofocus autocomplete="name" value="{{ old('name') }}" placeholder="{{ __('Name') }}">
+                                        </div>
+
+                                        @error('name')
+                                        <span class="text-danger text-small">{{ $message }}</span>
+                                        @enderror
+
+                                        <div class="wsus__login_input">
+                                            <i class="far fa-envelope"></i>
+                                            <input type="email" id="email" name="email" required autocomplete="username" value="{{ old('email') }}" placeholder="{{ __('Email') }}">
+                                        </div>
+
+                                        @error('email')
+                                        <span class="text-danger text-small">{{ $message }}</span>
+                                        @enderror
+
+                                        <div class="wsus__login_input">
+                                            <i class="fas fa-key"></i>
+                                            <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="{{ __('Password') }}">
+                                        </div>
+
+                                        @error('password')
+                                        <span class="text-danger text-small">{{ $message }}</span>
+                                        @enderror
+
+                                        <div class="wsus__login_input mb-5">
+                                            <i class="fas fa-key"></i>
+                                            <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password" placeholder="{{ __('Confirm Password') }}">
+                                        </div>
+
+                                        @error('password_confirmation')
+                                        <span class="text-danger text-small">{{ $message }}</span>
+                                        @enderror
+
+                                        <button class="common_btn" type="submit">{{ __('Register') }}</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ml-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    </section>
+@endsection

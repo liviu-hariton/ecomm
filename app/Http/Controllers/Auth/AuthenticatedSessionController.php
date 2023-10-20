@@ -37,7 +37,9 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('vendor.dashboard');
         }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if($request->user()->role === 'user') {
+            return redirect()->route('user.dashboard');
+        }
     }
 
     /**
@@ -50,6 +52,8 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        toastr('You have successfully ended your session!');
 
         return redirect('/');
     }
