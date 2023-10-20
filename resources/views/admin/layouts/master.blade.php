@@ -24,6 +24,12 @@
         @include('admin.layouts.sidebar')
 
         <div class="main-content">
+            @if(session('success'))
+                <div class="alert alert-success">
+                    <i class="fa fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
             @yield('main-section')
         </div>
 
