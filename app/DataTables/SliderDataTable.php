@@ -28,18 +28,20 @@ class SliderDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $edit_button = '<a href="'.route('admin.slider.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>';
-                $delete_button = '<form method="post" action="'.route('admin.slider.destroy', $query).'">
-                                    <input type="hidden" name="_token" value="'.csrf_token().'" />
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <a href="'.route('admin.slider.destroy', $query).'" class="btn btn-danger btn-sm" onclick="event.preventDefault();this.closest(\'form\').submit();"><i class="fa fa-trash"></i></a>
-                                </form>';
+                $delete_button = '<a href="'.route('admin.slider.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="slider-table"><i class="fa fa-trash"></i></a>';
 
                 return $edit_button.$delete_button;
             })
             ->addColumn('banner', function($query) {
                 return '<img src="'.asset($query->banner).'" title="'.$query->title.'" alt="'.$query->title.'" class="img-fluid" />';
             })
-            ->rawColumns(['banner', 'action'])
+            ->addColumn('url', function($query) {
+                return '<a href="'.$query->btn_url.'" target="_blank">'.$query->btn_url.' <i class="fas fa-external-link-alt"></i></a>';
+            })
+            ->addColumn('active', function($query) {
+                return $query->status === 1 ? '<span class="badge badge-success">yes</span>' : '<span class="badge badge-secondary">no</span>';
+            })
+            ->rawColumns(['banner', 'action', 'url', 'active'])
             ->setRowId('id');
     }
 
@@ -82,6 +84,11 @@ class SliderDataTable extends DataTable
             Column::make('id')->width(50),
             Column::make('banner')->width(200),
             Column::make('title'),
+            Column::make('type'),
+            Column::make('starting_price'),
+            Column::make('url'),
+            Column::make('sort_order')->addClass('text-center'),
+            Column::make('active')->addClass('text-center'),
 
             Column::computed('action')
                 ->exportable(false)

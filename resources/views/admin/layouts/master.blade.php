@@ -67,6 +67,65 @@
 <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function() {
+        $('body').on('click', '.delete-item', function(e) {
+            e.preventDefault();
+
+            let _url = $(this).attr('href');
+
+            let _table = $('#' + $(this).data('table')).DataTable();
+            let _row = _table.row($(this).closest('tr'));
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#FB160A',
+                cancelButtonColor: '#4CEA67',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: _url,
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(data) {
+                            if(data.status === 'success') {
+                                Swal.fire(
+                                    'Deleted!',
+                                    data.message,
+                                    'success'
+                                );
+
+                                _row.remove().draw();
+                            } else {
+                                Swal.fire(
+                                    'Hmmmm...',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire(
+                                'Ups!',
+                                error,
+                                'danger'
+                            );
+                        }
+                    });
+                }
+            })
+        });
+    });
+</script>
+
 @stack('scripts')
 </body>
 </html>

@@ -13,6 +13,8 @@
                         <form method="post" action="{{ route('admin.slider.store') }}" enctype="multipart/form-data">
                             @csrf
 
+                            <input type="hidden" name="new-slide-form" id="new-slide-form" value="1" />
+
                             <div class="card-header">
                                 <h4>New slide</h4>
 
@@ -56,7 +58,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="btn_url">Buton URL</label>
-                                    <input type="text" name="btn_url" id="btn_url" class="form-control" value="{{ old('btn_url') }}">
+                                    <input type="url" name="btn_url" id="btn_url" class="form-control" value="{{ old('btn_url') }}">
 
                                     @error('btn_url')
                                     <span class="text-danger text-small">{{ $message }}</span>
@@ -64,7 +66,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="sort_order">Order</label>
-                                    <input type="text" name="sort_order" id="sort_order" class="form-control" value="{{ old('sort_order') }}">
+                                    <input type="number" name="sort_order" id="sort_order" class="form-control" value="{{ old('sort_order') }}">
 
                                     @error('sort_order')
                                     <span class="text-danger text-small">{{ $message }}</span>

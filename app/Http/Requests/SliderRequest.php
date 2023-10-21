@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class SliderRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class SliderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'banner' => 'sometimes|required|image|max:2048|mimes:jpg,jpeg,png',
+            'banner' => Request::input('new-slide-form') === '1' ? 'required|image|max:2048|mimes:jpg,jpeg,png' : 'sometimes|required|image|max:2048|mimes:jpg,jpeg,png',
             'type' => 'string|max:200',
             'title' => 'required|max:200',
             'starting_price' => 'max:200',

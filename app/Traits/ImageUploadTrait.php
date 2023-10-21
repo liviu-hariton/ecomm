@@ -5,7 +5,8 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 
 trait ImageUploadTrait {
-    public function uploadImage(Request $request, $inputName, $path) {
+    public function uploadImage(Request $request, $inputName, $path): false|string
+    {
         if($request->hasFile($inputName)) {
             $image = $request->{$inputName};
 
@@ -16,5 +17,18 @@ trait ImageUploadTrait {
 
             return $path.'/'.$image_name;
         }
+
+        return false;
+    }
+
+    public function deleteImage(string $path): bool
+    {
+        if(\File::exists(public_path($path))) {
+            \File::delete(public_path($path));
+
+            return true;
+        }
+
+        return false;
     }
 }
