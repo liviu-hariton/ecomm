@@ -1,4 +1,4 @@
-@extends('frontend.dashboard.layouts.master')
+@extends('vendor.dashboard.layouts.master')
 
 @section('dashboard-main-content')
     <div class="wsus__dashboard">
@@ -28,7 +28,7 @@
                 </a>
             </div>
             <div class="col-xl-2 col-6 col-md-4">
-                <a class="wsus__dashboard_item orange" href="dsahboard_profile.html">
+                <a class="wsus__dashboard_item orange" href="{{ route('vendor.profile') }}">
                     <i class="fas fa-user-shield"></i>
                     <p>profile</p>
                 </a>
