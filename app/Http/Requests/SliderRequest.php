@@ -23,6 +23,7 @@ class SliderRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // the 'banner' is required only upon creating a new slide
             'banner' => Request::input('new-slide-form') === '1' ? 'required|image|max:2048|mimes:jpg,jpeg,png' : 'sometimes|required|image|max:2048|mimes:jpg,jpeg,png',
             'type' => 'string|max:200',
             'title' => 'required|max:200',
