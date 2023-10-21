@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
+use AllowDynamicProperties;
+use App\DataTables\SliderDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SliderRequest;
 use App\Models\Slider;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
@@ -14,9 +17,9 @@ class SliderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(SliderDataTable $dataTable)
     {
-        return view('admin.slider.index');
+        return $dataTable->render('admin.slider.index');
     }
 
     /**
@@ -30,30 +33,15 @@ class SliderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SliderRequest $request)
     {
-        $request->validate([
-            'banner' => 'required|image|max:2048|mimes:jpg,jpeg,png',
-            'type' => 'string|max:200',
-            'title' => 'required|max:200',
-            'starting_price' => 'max:200',
-            'btn_url' => 'url',
-            'sort_order' => 'required|integer',
-            'status' => 'required'
-        ]);
+        $validated_data = $request->validated();
 
-        $slider = new Slider();
+        if($request->hasFile('banner')) {
+            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads');
+        }
 
-        $slider->banner = $this->uploadImage($request, 'banner', 'uploads');
-
-        $slider->type = $request->type;
-        $slider->title = $request->title;
-        $slider->starting_price = $request->starting_price;
-        $slider->btn_url = $request->btn_url;
-        $slider->sort_order = $request->sort_order;
-        $slider->status = $request->status;
-
-        $slider->save();
+        Slider::create($validated_data);
 
         toastr('Slide created successfully');
 
@@ -71,17 +59,33 @@ class SliderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Slider $slider)
     {
-        //
+        return view('admin.slider.edit', [
+            'slider' => $slider
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SliderRequest $request, Slider $slider)
     {
-        //
+        $validated_data = $request->validated();
+
+        if($request->hasFile('banner')) {
+            if(\File::exists(public_path($slider->banner))) {
+                \File::delete(public_path($slider->banner));
+            }
+
+            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads');
+        }
+
+        $slider->update($validated_data);
+
+        toastr('Slide updated successfully');
+
+        return redirect()->route('admin.slider.edit', $slider);
     }
 
     /**

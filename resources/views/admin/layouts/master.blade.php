@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/components.css') }}">
+
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 </head>
 
 <body>
@@ -58,8 +61,12 @@
 <script src="{{ asset('backend/assets/modules/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
 <script src="{{ asset('backend/assets/modules/summernote/summernote-bs4.js') }}"></script>
 <script src="{{ asset('backend/assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
-<script src="{{ asset('backend/assets/js/page/index-0.js') }}"></script>
 <script src="{{ asset('backend/assets/js/scripts.js') }}"></script>
 <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
+
+<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+@stack('scripts')
 </body>
 </html>

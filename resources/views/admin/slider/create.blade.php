@@ -71,7 +71,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="status">Select</label>
+                                    <label for="status">Status</label>
                                     <select class="form-control" name="status" id="status">
                                         <option value="1" {{ old('status') === '1' ? 'selected="selected"' : '' }}>Active</option>
                                         <option value="0" {{ old('status') === '0' ? 'selected="selected"' : '' }}>Inactive</option>
