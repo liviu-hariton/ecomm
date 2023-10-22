@@ -25,6 +25,18 @@
 
                             <div class="card-body">
                                 <div class="form-group">
+                                    <label for="status">Parent category</label>
+                                    <select class="form-control select2" name="parent_id" id="parent_id">
+                                        <option value="0">[ROOT]</option>
+                                        {!! $categories_tree !!}
+                                    </select>
+
+                                    @error('parent_id')
+                                    <span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
                                     <label for="name">Name</label>
                                     <input type="text" name="name" id="name" class="form-control duplicate-content" data-duplicate-target="slug" value="{{ old('title') }}">
 

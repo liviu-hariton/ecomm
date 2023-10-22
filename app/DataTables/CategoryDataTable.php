@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Http\Request;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -29,13 +30,17 @@ class CategoryDataTable extends DataTable
          */
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
-                $edit_button = '<a href="'.route('admin.category.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>';
-                $delete_button = '<a href="'.route('admin.category.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="category-table"><i class="fa fa-trash"></i></a>';
+                $buttons = [
+                    'children' => $query->children->count() > 0 ? '<a href="'.route('admin.category.show', $query).'" class="btn btn-info btn-sm"><i class="fa fa-sitemap"></i></a>' : '',
+                    'new_children' => '<a href="'.route('admin.category.create', ['parent' => $query->id]).'" class="btn btn-success btn-sm ml-1"><i class="fa fa-plus-square"></i></a>',
+                    'edit' => '<a href="'.route('admin.category.edit', $query).'" class="btn btn-warning btn-sm ml-1"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route('admin.category.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="category-table"><i class="fa fa-trash"></i></a>'
+                ];
 
-                return $edit_button.$delete_button;
+                return implode('', $buttons);
             })
             ->addColumn('icon', function($query) {
-                return '<span class="btn btn-info"><i class="'.$query->icon.'"></i></span>';
+                return $query->icon !== 'empty' ? '<span class="btn btn-info"><i class="'.$query->icon.'"></i></span>' : '';
             })
             ->addColumn('slug', function($query) {
                 return '<a href="'.$query->slug.'" target="_blank">'.$query->slug.' <i class="fas fa-external-link-alt"></i></a>';
@@ -46,16 +51,36 @@ class CategoryDataTable extends DataTable
                         <span class="custom-switch-indicator"></span>
                       </label>';
             })
-            ->rawColumns(['icon', 'action', 'slug', 'active'])
+            ->addColumn('parent', function($query) {
+                if($query->parent_id === 0) {
+                    $parent = '[ROOT]';
+                } else {
+                    $parent = $query->parent->parent_id === 0 ? '<a href="'.route('admin.category.index').'" class="text-info"><i class="fa fa-sitemap"></i> '.$query->parent->name.'</a>' : '<a href="'.route('admin.category.show', $query->parent->parent_id).'" class="text-info"><i class="fa fa-search"></i> '.$query->parent->name.'</a>';
+                }
+
+                return $parent;
+            })
+            ->addColumn('childs count', function($query) {
+                return $query->children->count();
+            })
+            ->rawColumns(['icon', 'action', 'slug', 'active', 'parent'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Category $model): QueryBuilder
+    public function query(Category $model, Request $request): QueryBuilder
     {
-        return $model->newQuery();
+        $base_query = $model->newQuery();
+
+        if(isset($request->category)) {
+            $base_query->where('parent_id', $request->category);
+        } else {
+            $base_query->where('parent_id', 0);
+        }
+
+        return $base_query;
     }
 
     /**
@@ -88,15 +113,17 @@ class CategoryDataTable extends DataTable
         return [
 
             Column::make('id')->addClass('text-center')->width(50),
+            Column::make('parent'),
             Column::make('icon')->addClass('text-center')->width(50),
             Column::make('name'),
             Column::make('slug'),
+            Column::make('childs count')->addClass('text-center'),
             Column::make('active')->addClass('text-center'),
 
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(140)
                 ->addClass('text-center'),
         ];
     }

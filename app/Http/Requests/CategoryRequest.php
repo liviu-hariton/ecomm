@@ -23,9 +23,10 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'parent_id' => Request::input('new-category-form') === "1" ? 'required|integer' : 'required|integer|not_in:'.$this->route('category')->id,
             'name' => 'required|max:200',
             'slug' => Request::input('new-category-form') === "1" ? 'required|max:200|unique:categories,slug' : 'required|max:200|unique:categories,slug,'.$this->route('category')->id,
-            'icon' => 'required',
+            'icon' => 'sometimes|required',
             'status' => 'required'
         ];
     }
@@ -35,5 +36,12 @@ class CategoryRequest extends FormRequest
         $this->merge([
             'slug' => \Str::slug($this->slug)
         ]);
+    }
+
+    public function messages(): array
+    {
+        return [
+            'parent_id.not_in' => 'The category cannot be it\'s own parent'
+        ];
     }
 }

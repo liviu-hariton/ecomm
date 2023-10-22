@@ -24,6 +24,7 @@
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-sitemap"></i><span>Categories</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('admin.category.index') }}">List</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.category.create') }}">Create new</a></li>
                 </ul>
             </li>
 

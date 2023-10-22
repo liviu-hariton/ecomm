@@ -299,7 +299,13 @@ $(function() {
 
   // Select2
   if(jQuery().select2) {
-    $(".select2").select2();
+    $(".select2").select2({
+        templateResult: format,
+        templateSelection: format,
+        escapeMarkup: function(m) {
+            return m;
+        }
+    });
   }
 
   // Selectric

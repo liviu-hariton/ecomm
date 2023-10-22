@@ -16,3 +16,14 @@ if($(".duplicate-content").length) {
         });
     });
 }
+
+function format(item) {
+    var originalOption = item.element;
+    var originalText = item.text;
+
+    if(!item.id) {
+        return item.text;
+    }
+
+    return '<span style="padding-left: ' + $(originalOption).data('padding') + 'px;">' + originalText + '</span>';
+}

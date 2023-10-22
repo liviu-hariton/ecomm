@@ -29,10 +29,12 @@ class SliderDataTable extends DataTable
          */
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
-                $edit_button = '<a href="'.route('admin.slider.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>';
-                $delete_button = '<a href="'.route('admin.slider.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="slider-table"><i class="fa fa-trash"></i></a>';
+                $buttons = [
+                    'edit' => '<a href="'.route('admin.slider.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route('admin.slider.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="slider-table"><i class="fa fa-trash"></i></a>'
+                ];
 
-                return $edit_button.$delete_button;
+                return implode('', $buttons);
             })
             ->addColumn('banner', function($query) {
                 return '<img src="'.asset($query->banner).'" title="'.$query->title.'" alt="'.$query->title.'" class="img-fluid" />';
