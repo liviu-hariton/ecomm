@@ -117,7 +117,7 @@ class CategoryController extends Controller
         return view('admin.category.edit', [
             'category' => $category,
             'categories_tree' => $this->categoriesTree(
-                selected: [$category->parent]
+                selected: [$category->parent_id]
             )
         ]);
     }
@@ -143,6 +143,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        /**
+         * All direct children will become root categories
+         * (no parent as the current parent will be deleted)
+         */
+        Category::where('parent_id', $category->id)->update([
+            'parent_id' => 0
+        ]);
+
         $category->delete();
 
         if(\request()->ajax()) {
