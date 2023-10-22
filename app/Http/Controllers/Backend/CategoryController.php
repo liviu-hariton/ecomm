@@ -98,15 +98,17 @@ class CategoryController extends Controller
 
         toastr('Category created successfully');
 
-        return redirect()->route('admin.category.index');
+        return $validated['parent_id'] === 0 ? redirect()->route('admin.category.index') : redirect()->route('admin.category.show', $validated['parent_id']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CategoryDataTable $dataTable)
+    public function show(CategoryDataTable $dataTable, Request $request)
     {
-        return $dataTable->render('admin.category.index');
+        return $dataTable->render('admin.category.index', [
+            'category' => Category::findOrFail($request->category)
+        ]);
     }
 
     /**

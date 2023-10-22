@@ -3,7 +3,11 @@
 @section('main-section')
     <section class="section">
         <div class="section-header">
-            <h1>Categories</h1>
+            @if(Route::currentRouteName() !== 'admin.category.show')
+                <h1>Categories</h1>
+            @else
+                <h1>{{ $category->name }}</h1>
+            @endif
         </div>
 
         <div class="section-body">
@@ -11,7 +15,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Categories list</h4>
+                            @if(Route::currentRouteName() !== 'admin.category.show')
+                                <h4>Categories list</h4>
+                            @else
+                                <h4>Subcategories list</h4>
+                            @endif
 
                             <div class="card-header-action">
                                 <a href="{{ route('admin.category.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> Create category</a>
