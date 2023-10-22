@@ -52,10 +52,10 @@ class CategoryDataTable extends DataTable
                       </label>';
             })
             ->addColumn('parent', function($query) {
-                if($query->parent_id === 0) {
+                if($query->parent_id === null) {
                     $parent = '[ROOT]';
                 } else {
-                    $parent = $query->parent->parent_id === 0 ? '<a href="'.route('admin.category.index').'" class="text-info"><i class="fa fa-sitemap"></i> '.$query->parent->name.'</a>' : '<a href="'.route('admin.category.show', $query->parent->parent_id).'" class="text-info"><i class="fa fa-search"></i> '.$query->parent->name.'</a>';
+                    $parent = $query->parent->parent_id === null ? '<a href="'.route('admin.category.index').'" class="text-info"><i class="fa fa-sitemap"></i> '.$query->parent->name.'</a>' : '<a href="'.route('admin.category.show', $query->parent->parent_id).'" class="text-info"><i class="fa fa-search"></i> '.$query->parent->name.'</a>';
                 }
 
                 return $parent;
@@ -77,7 +77,7 @@ class CategoryDataTable extends DataTable
         if(isset($request->category)) {
             $base_query->where('parent_id', $request->category);
         } else {
-            $base_query->where('parent_id', 0);
+            $base_query->where('parent_id', null);
         }
 
         return $base_query;

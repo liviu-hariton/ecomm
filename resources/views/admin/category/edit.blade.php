@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <label for="status">Parent category</label>
                                     <select class="form-control select2" name="parent_id" id="parent_id">
-                                        <option value="0">[ROOT]</option>
+                                        <option value="">[ROOT]</option>
                                         {!! $categories_tree !!}
                                     </select>
 

@@ -21,7 +21,7 @@ class CategoryController extends Controller
     /**
      * Load the categories tree, with parent - childs relations
      */
-    private function categoriesTree(string $return_type = 'select_options', int $parent_id = 0, int $padding = 0, array $selected = [], array $ignore = [], string $branch = '')
+    private function categoriesTree(string $return_type = 'select_options', int $parent_id = null, int $padding = 0, array $selected = [], array $ignore = [], string $branch = '')
     {
         $categories_array = [];
         $categories_options = '';
@@ -98,7 +98,7 @@ class CategoryController extends Controller
 
         toastr('Category created successfully');
 
-        return $validated['parent_id'] === 0 ? redirect()->route('admin.category.index') : redirect()->route('admin.category.show', $validated['parent_id']);
+        return $validated['parent_id'] === null ? redirect()->route('admin.category.index') : redirect()->route('admin.category.show', $validated['parent_id']);
     }
 
     /**
@@ -150,7 +150,7 @@ class CategoryController extends Controller
          * (no parent as the current parent will be deleted)
          */
         Category::where('parent_id', $category->id)->update([
-            'parent_id' => 0
+            'parent_id' => null
         ]);
 
         $category->delete();

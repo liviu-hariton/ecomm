@@ -23,7 +23,7 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'parent_id' => Request::input('new-category-form') === "1" ? 'required|integer' : 'required|integer|not_in:'.$this->route('category')->id,
+            'parent_id' => Request::input('new-category-form') === "1" ? 'nullable' : 'nullable|not_in:'.$this->route('category')->id,
             'name' => 'required|max:200',
             'slug' => Request::input('new-category-form') === "1" ? 'required|max:200|unique:categories,slug' : 'required|max:200|unique:categories,slug,'.$this->route('category')->id,
             'icon' => 'sometimes|required',
