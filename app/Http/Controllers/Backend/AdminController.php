@@ -16,4 +16,17 @@ class AdminController extends Controller
     {
         return view('admin.auth.login');
     }
+
+    public function changeStatus(Request $request) {
+        $model = str_replace("^", "\\", $request->model);
+
+        $object = $model::findOrFail($request->id);
+        $object->status = $request->status;
+        $object->save();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Status has been successfully updated!'
+        ]);
+    }
 }

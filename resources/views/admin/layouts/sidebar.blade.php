@@ -20,8 +20,15 @@
                 </ul>
             </li>--}}
 
+            <li class="dropdown active">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-sitemap"></i><span>Categories</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('admin.category.index') }}">List</a></li>
+                </ul>
+            </li>
+
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-sitemap"></i><span>Content</span></a>
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-file-alt"></i><span>Content</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('admin.slider.index') }}">Home Slider</a></li>
                 </ul>

@@ -99,9 +99,15 @@ class SliderController extends Controller
 
         $slider->delete();
 
-        return response([
-            'status' => 'success',
-            'message' => 'Item deleted successfully!'
-        ]);
+        if(\request()->ajax()) {
+            return response([
+                'status' => 'success',
+                'message' => 'Item deleted successfully!'
+            ]);
+        } else {
+            toastr('Item deleted successfully!');
+
+            return redirect()->route('admin.slider.index');
+        }
     }
 }

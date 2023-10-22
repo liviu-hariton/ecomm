@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/weather-icon/css/weather-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/weather-icon/css/weather-icons-wind.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/summernote/summernote-bs4.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('backend/assets/js/bootstrap-iconpicker/dist/css/bootstrap-iconpicker.min.css') }}">
+
     <link rel="stylesheet" href="{{ asset('backend/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/components.css') }}">
 
@@ -67,6 +70,8 @@
 <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
+<script src="{{ asset('backend/assets/js/bootstrap-iconpicker/dist/js/bootstrap-iconpicker.bundle.min.js') }}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -122,6 +127,45 @@
                     });
                 }
             })
+        });
+
+        $('body').on('click', '.change-status', function(e) {
+            let _status = $(this).is(':checked') === true ? '1' : '0';
+            let _id = $(this).data('id');
+            let _model = $(this).data('model');
+
+            $.ajax({
+                type: 'PUT',
+                url: '{{ route('admin.change-status') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "status" : _status,
+                    "id": _id,
+                    "model": _model
+                },
+                success: function(data) {
+                    if(data.status === 'success') {
+                        Swal.fire(
+                            'Updated!',
+                            data.message,
+                            'success'
+                        );
+                    } else {
+                        Swal.fire(
+                            'Hmmmm...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Ups!',
+                        error,
+                        'danger'
+                    );
+                }
+            });
         });
     });
 </script>
