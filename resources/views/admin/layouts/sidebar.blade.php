@@ -8,6 +8,7 @@
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Frontend</li>
+            <li><a class="nav-link" href="/" target="_blank"><i class="fa fa-globe"></i> <span>Home</span></a></li>
 
             <li class="menu-header">Admin</li>
             <li><a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
@@ -20,18 +21,18 @@
                 </ul>
             </li>--}}
 
-            <li class="dropdown active">
+            <li class="dropdown {{ menuItemActive(['admin.category.*']) }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-sitemap"></i><span>Categories</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{ route('admin.category.index') }}">List</a></li>
-                    <li><a class="nav-link" href="{{ route('admin.category.create') }}">Create new</a></li>
+                    <li class="{{ menuItemActive(['admin.category.index']) }}"><a class="nav-link" href="{{ route('admin.category.index') }}">List</a></li>
+                    <li class="{{ menuItemActive(['admin.category.create']) }}"><a class="nav-link" href="{{ route('admin.category.create') }}">Create new</a></li>
                 </ul>
             </li>
 
-            <li class="dropdown">
+            <li class="dropdown {{ menuItemActive(['admin.slider.*']) }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-file-alt"></i><span>Content</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{ route('admin.slider.index') }}">Home Slider</a></li>
+                    <li class="{{ menuItemActive(['admin.category.index']) }}"><a class="nav-link" href="{{ route('admin.slider.index') }}">Home Slider</a></li>
                 </ul>
             </li>
         </ul>
