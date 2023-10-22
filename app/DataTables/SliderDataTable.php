@@ -24,6 +24,8 @@ class SliderDataTable extends DataTable
         /**
          * Not a big fan of using HTML code inside PHP code (should be loaded from view and / or components)
          * but for the sake of the tutorial, let it be like this for now
+         *
+         * @TODO move the HTML code in external components
          */
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
@@ -39,7 +41,10 @@ class SliderDataTable extends DataTable
                 return '<a href="'.$query->btn_url.'" target="_blank">'.$query->btn_url.' <i class="fas fa-external-link-alt"></i></a>';
             })
             ->addColumn('active', function($query) {
-                return $query->status === 1 ? '<span class="badge badge-success">yes</span>' : '<span class="badge badge-secondary">no</span>';
+                return '<label class="custom-switch mt-2">
+                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^Slider" class="custom-switch-input change-status">
+                        <span class="custom-switch-indicator"></span>
+                      </label>';
             })
             ->rawColumns(['banner', 'action', 'url', 'active'])
             ->setRowId('id');

@@ -21,6 +21,12 @@ class CategoryDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
+        /**
+         * Not a big fan of using HTML code inside PHP code (should be loaded from view and / or components)
+         * but for the sake of the tutorial, let it be like this for now
+         *
+         * @TODO move the HTML code in external components
+         */
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $edit_button = '<a href="'.route('admin.category.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>';
