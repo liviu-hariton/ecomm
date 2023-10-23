@@ -29,4 +29,17 @@ class AdminController extends Controller
             'message' => 'Status has been successfully updated!'
         ]);
     }
+
+    public function changeFeatured(Request $request) {
+        $model = str_replace("^", "\\", $request->model);
+
+        $object = $model::findOrFail($request->id);
+        $object->featured = $request->featured;
+        $object->save();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Status has been successfully updated!'
+        ]);
+    }
 }

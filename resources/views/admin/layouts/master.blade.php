@@ -167,6 +167,41 @@
                 }
             });
         });
+
+        $('body').on('click', '.change-featured', function(e) {
+            let _featured = $(this).is(':checked') === true ? '1' : '0';
+            let _id = $(this).data('id');
+            let _model = $(this).data('model');
+
+            $.ajax({
+                type: 'PUT',
+                url: '{{ route('admin.change-featured') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "featured" : _featured,
+                    "id": _id,
+                    "model": _model
+                },
+                success: function(data) {
+                    if(data.status === 'success') {
+                        toastr.success(data.message);
+                    } else {
+                        Swal.fire(
+                            'Hmmmm...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Ups!',
+                        error,
+                        'danger'
+                    );
+                }
+            });
+        });
     });
 </script>
 
