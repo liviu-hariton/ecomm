@@ -36,6 +36,13 @@
                 </ul>
             </li>
 
+            <li class="dropdown {{ menuItemActive(['admin.vendor-profile.*']) }}">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-store-alt"></i><span>Ecommerce</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ menuItemActive(['admin.vendor-profile.*']) }}"><a class="nav-link" href="{{ route('admin.vendor-profile.index') }}">Vendor Profile</a></li>
+                </ul>
+            </li>
+
             <li class="dropdown {{ menuItemActive(['admin.slider.*']) }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-file-alt"></i><span>Content</span></a>
                 <ul class="dropdown-menu">
