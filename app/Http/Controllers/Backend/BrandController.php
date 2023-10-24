@@ -37,7 +37,7 @@ class BrandController extends Controller
         $validated_data = $request->validated();
 
         if($request->hasFile('logo')) {
-            $validated_data['logo'] = $this->uploadImage($request, 'logo', 'uploads');
+            $validated_data['logo'] = $this->uploadImage($request, 'logo', 'uploads/brands');
         }
 
         Brand::create($validated_data);
@@ -72,12 +72,12 @@ class BrandController extends Controller
     {
         $validated_data = $request->validated();
 
-        if($request->hasFile('banner')) {
+        if($request->hasFile('logo')) {
             if(\File::exists(public_path($brand->banner))) {
                 \File::delete(public_path($brand->banner));
             }
 
-            $validated_data['logo'] = $this->uploadImage($request, 'logo', 'uploads');
+            $validated_data['logo'] = $this->uploadImage($request, 'logo', 'uploads/brands');
         }
 
         $brand->update($validated_data);

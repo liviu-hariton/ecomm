@@ -66,7 +66,7 @@ class AdminVendorProfileController extends Controller
                 \File::delete(public_path($vendor->banner));
             }
 
-            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads');
+            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads/vendors');
         }
 
         $vendor->load('user.user')->find(1)->update($validated_data);

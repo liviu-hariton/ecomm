@@ -21,7 +21,7 @@ class CategoryController extends Controller
     /**
      * Load the categories tree, with parent - childs relations
      */
-    private function categoriesTree(string $return_type = 'select_options', int $parent_id = null, int $padding = 0, array $selected = [], array $ignore = [], string $branch = '')
+    public function categoriesTree(string $return_type = 'select_options', int $parent_id = null, int $padding = 0, array $selected = [], array $ignore = [], string $branch = '')
     {
         $categories_array = [];
         $categories_options = '';

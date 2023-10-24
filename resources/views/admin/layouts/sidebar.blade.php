@@ -21,18 +21,12 @@
                 </ul>
             </li>--}}
 
-            <li class="dropdown {{ menuItemActive(['admin.category.*']) }}">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-sitemap"></i><span>Categories</span></a>
+            <li class="dropdown {{ menuItemActive(['admin.category.*', 'admin.brand.*', 'admin.product.*']) }}">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-sitemap"></i><span>Catalogue</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ menuItemActive(['admin.category.index']) }}"><a class="nav-link" href="{{ route('admin.category.index') }}">List</a></li>
-                    <li class="{{ menuItemActive(['admin.category.create']) }}"><a class="nav-link" href="{{ route('admin.category.create') }}">Create new</a></li>
-                </ul>
-            </li>
-
-            <li class="dropdown {{ menuItemActive(['admin.brand.*']) }}">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i><span>Products</span></a>
-                <ul class="dropdown-menu">
+                    <li class="{{ menuItemActive(['admin.category.*']) }}"><a class="nav-link" href="{{ route('admin.category.index') }}">Categories</a></li>
                     <li class="{{ menuItemActive(['admin.brand.*']) }}"><a class="nav-link" href="{{ route('admin.brand.index') }}">Brands</a></li>
+                    <li class="{{ menuItemActive(['admin.product.*']) }}"><a class="nav-link" href="{{ route('admin.product.index') }}">Products</a></li>
                 </ul>
             </li>
 

@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/weather-icon/css/weather-icons-wind.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/select2/dist/css/select2.min.css') }}">
-
     <link rel="stylesheet" href="{{ asset('backend/assets/js/bootstrap-iconpicker/dist/css/bootstrap-iconpicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 
     <link rel="stylesheet" href="{{ asset('backend/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/components.css') }}">
@@ -67,6 +67,7 @@
 <script src="{{ asset('backend/assets/modules/summernote/summernote-bs4.js') }}"></script>
 <script src="{{ asset('backend/assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
 <script src="{{ asset('backend/assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script src="{{ asset('backend/assets/js/scripts.js') }}"></script>
 <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
 
@@ -179,6 +180,41 @@
                 data: {
                     "_token": "{{ csrf_token() }}",
                     "featured" : _featured,
+                    "id": _id,
+                    "model": _model
+                },
+                success: function(data) {
+                    if(data.status === 'success') {
+                        toastr.success(data.message);
+                    } else {
+                        Swal.fire(
+                            'Hmmmm...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Ups!',
+                        error,
+                        'danger'
+                    );
+                }
+            });
+        });
+
+        $('body').on('click', '.change-approved', function(e) {
+            let _approved = $(this).is(':checked') === true ? '1' : '0';
+            let _id = $(this).data('id');
+            let _model = $(this).data('model');
+
+            $.ajax({
+                type: 'PUT',
+                url: '{{ route('admin.change-approved') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "approved" : _approved,
                     "id": _id,
                     "model": _model
                 },

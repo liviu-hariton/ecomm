@@ -38,7 +38,7 @@ class SliderController extends Controller
         $validated_data = $request->validated();
 
         if($request->hasFile('banner')) {
-            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads');
+            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads/slides');
         }
 
         Slider::create($validated_data);
@@ -78,7 +78,7 @@ class SliderController extends Controller
                 \File::delete(public_path($slider->banner));
             }
 
-            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads');
+            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads/slides');
         }
 
         $slider->update($validated_data);

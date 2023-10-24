@@ -42,4 +42,17 @@ class AdminController extends Controller
             'message' => 'Status has been successfully updated!'
         ]);
     }
+
+    public function changeApproved(Request $request) {
+        $model = str_replace("^", "\\", $request->model);
+
+        $object = $model::findOrFail($request->id);
+        $object->approved = $request->approved;
+        $object->save();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Status has been successfully updated!'
+        ]);
+    }
 }
