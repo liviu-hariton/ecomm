@@ -20,6 +20,7 @@
 
                                     <a href="{{ route('admin.image-gallery.index', ['pid' => $image_gallery->product_id]) }}" class="btn btn-success"><i class="fa fa-plus"></i> Upload image</a>
                                     <a href="{{ route('admin.image-gallery.index', ['pid' => $image_gallery->product_id]) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to gallery</a>
+                                    <a href="{{ route('admin.product.edit', $image_gallery->product) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to product</a>
                                     <a href="{{ route('admin.image-gallery.destroy', $image_gallery) }}" onclick="event.preventDefault();this.closest('form').submit();" class="btn btn-danger"><i class="fa fa-trash"></i> Delete image</a>
                                 </form>
                             </div>
