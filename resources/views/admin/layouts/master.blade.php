@@ -11,11 +11,16 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/weather-icon/css/weather-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/weather-icon/css/weather-icons-wind.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/modules/summernote/summernote-bs4.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/modules/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/js/bootstrap-iconpicker/dist/css/bootstrap-iconpicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
+
     <link rel="stylesheet" href="{{ asset('backend/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/components.css') }}">
 
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 
 <body>
@@ -61,13 +66,18 @@
 <script src="{{ asset('backend/assets/modules/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
 <script src="{{ asset('backend/assets/modules/summernote/summernote-bs4.js') }}"></script>
 <script src="{{ asset('backend/assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+<script src="{{ asset('backend/assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script src="{{ asset('backend/assets/js/scripts.js') }}"></script>
 <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
 
 <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('backend/assets/js/bootstrap-iconpicker/dist/js/bootstrap-iconpicker.bundle.min.js') }}"></script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     $(document).ready(function() {
@@ -122,6 +132,111 @@
                     });
                 }
             })
+        });
+
+        $('body').on('click', '.change-status', function(e) {
+            let _status = $(this).is(':checked') === true ? '1' : '0';
+            let _id = $(this).data('id');
+            let _model = $(this).data('model');
+
+            $.ajax({
+                type: 'PUT',
+                url: '{{ route('admin.change-status') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "status" : _status,
+                    "id": _id,
+                    "model": _model
+                },
+                success: function(data) {
+                    if(data.status === 'success') {
+                        toastr.success(data.message);
+                    } else {
+                        Swal.fire(
+                            'Hmmmm...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Ups!',
+                        error,
+                        'danger'
+                    );
+                }
+            });
+        });
+
+        $('body').on('click', '.change-featured', function(e) {
+            let _featured = $(this).is(':checked') === true ? '1' : '0';
+            let _id = $(this).data('id');
+            let _model = $(this).data('model');
+
+            $.ajax({
+                type: 'PUT',
+                url: '{{ route('admin.change-featured') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "featured" : _featured,
+                    "id": _id,
+                    "model": _model
+                },
+                success: function(data) {
+                    if(data.status === 'success') {
+                        toastr.success(data.message);
+                    } else {
+                        Swal.fire(
+                            'Hmmmm...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Ups!',
+                        error,
+                        'danger'
+                    );
+                }
+            });
+        });
+
+        $('body').on('click', '.change-approved', function(e) {
+            let _approved = $(this).is(':checked') === true ? '1' : '0';
+            let _id = $(this).data('id');
+            let _model = $(this).data('model');
+
+            $.ajax({
+                type: 'PUT',
+                url: '{{ route('admin.change-approved') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "approved" : _approved,
+                    "id": _id,
+                    "model": _model
+                },
+                success: function(data) {
+                    if(data.status === 'success') {
+                        toastr.success(data.message);
+                    } else {
+                        Swal.fire(
+                            'Hmmmm...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Ups!',
+                        error,
+                        'danger'
+                    );
+                }
+            });
         });
     });
 </script>

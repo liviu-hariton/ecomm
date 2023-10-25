@@ -10,20 +10,24 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h4>Edit slide</h4>
+
+                            <div class="card-header-action">
+                                <form method="POST" action="{{ route('admin.slider.destroy', $slider) }}">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <a href="{{ route('admin.slider.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> Create slide</a>
+                                    <a href="{{ route('admin.slider.index') }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to slides</a>
+                                    <a href="{{ route('admin.slider.destroy', $slider) }}" onclick="event.preventDefault();this.closest('form').submit();" class="btn btn-danger"><i class="fa fa-trash"></i> Delete slide</a>
+                                </form>
+                            </div>
+                        </div>
+
                         <form method="post" action="{{ route('admin.slider.update', $slider) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-
-                            <div class="card-header">
-                                <h4>Edit slide</h4>
-
-                                <div class="card-header-action">
-                                    <a href="{{ route('admin.slider.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> Create slide</a>
-                                    <a href="{{ route('admin.slider.index') }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to slides</a>
-                                    <a href="{{ route('admin.slider.destroy', $slider) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete slide</a>
-                                </div>
-                            </div>
-
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4">

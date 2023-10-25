@@ -10,19 +10,18 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h4>New slide</h4>
+
+                            <div class="card-header-action">
+                                <a href="{{ route('admin.slider.index') }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to slides</a>
+                            </div>
+                        </div>
+
                         <form method="post" action="{{ route('admin.slider.store') }}" enctype="multipart/form-data">
                             @csrf
 
                             <input type="hidden" name="new-slide-form" id="new-slide-form" value="1" />
-
-                            <div class="card-header">
-                                <h4>New slide</h4>
-
-                                <div class="card-header-action">
-                                    <a href="{{ route('admin.slider.index') }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to slides</a>
-                                </div>
-                            </div>
-
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="banner">Slide image</label>

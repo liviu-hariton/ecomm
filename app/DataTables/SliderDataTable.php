@@ -24,13 +24,17 @@ class SliderDataTable extends DataTable
         /**
          * Not a big fan of using HTML code inside PHP code (should be loaded from view and / or components)
          * but for the sake of the tutorial, let it be like this for now
+         *
+         * @TODO move the HTML code in external components
          */
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
-                $edit_button = '<a href="'.route('admin.slider.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>';
-                $delete_button = '<a href="'.route('admin.slider.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="slider-table"><i class="fa fa-trash"></i></a>';
+                $buttons = [
+                    'edit' => '<a href="'.route('admin.slider.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route('admin.slider.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="slider-table"><i class="fa fa-trash"></i></a>'
+                ];
 
-                return $edit_button.$delete_button;
+                return implode('', $buttons);
             })
             ->addColumn('banner', function($query) {
                 return '<img src="'.asset($query->banner).'" title="'.$query->title.'" alt="'.$query->title.'" class="img-fluid" />';
@@ -39,7 +43,10 @@ class SliderDataTable extends DataTable
                 return '<a href="'.$query->btn_url.'" target="_blank">'.$query->btn_url.' <i class="fas fa-external-link-alt"></i></a>';
             })
             ->addColumn('active', function($query) {
-                return $query->status === 1 ? '<span class="badge badge-success">yes</span>' : '<span class="badge badge-secondary">no</span>';
+                return '<label class="custom-switch mt-2">
+                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^Slider" class="custom-switch-input change-status">
+                        <span class="custom-switch-indicator"></span>
+                      </label>';
             })
             ->rawColumns(['banner', 'action', 'url', 'active'])
             ->setRowId('id');
@@ -63,7 +70,7 @@ class SliderDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
-                    ->orderBy(1)
+                    ->orderBy(6, 'asc')
                     ->selectStyleSingle()
                     ->buttons([
                         Button::make('excel'),

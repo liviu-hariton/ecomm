@@ -299,7 +299,13 @@ $(function() {
 
   // Select2
   if(jQuery().select2) {
-    $(".select2").select2();
+    $(".select2").select2({
+        templateResult: format,
+        templateSelection: format,
+        escapeMarkup: function(m) {
+            return m;
+        }
+    });
   }
 
   // Selectric
@@ -557,7 +563,7 @@ $(function() {
     }
     if($(".datetimepicker").length) {
       $('.datetimepicker').daterangepicker({
-        locale: {format: 'YYYY-MM-DD hh:mm'},
+        locale: {format: 'YYYY-MM-DD HH:mm'},
         singleDatePicker: true,
         timePicker: true,
         timePicker24Hour: true,
