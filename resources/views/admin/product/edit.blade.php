@@ -20,6 +20,7 @@
 
                                     <a href="{{ route('admin.product.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> Create product</a>
                                     <a href="{{ route('admin.product.index') }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to products</a>
+                                    <a href="{{ route('admin.image-gallery.index', ['pid' => $product->id]) }}" class="btn btn-info"><i class="fa fa-images"></i> Images gallery</a>
                                     <a href="{{ route('admin.product.destroy', $product) }}" onclick="event.preventDefault();this.closest('form').submit();" class="btn btn-danger"><i class="fa fa-trash"></i> Delete product</a>
                                 </form>
                             </div>
