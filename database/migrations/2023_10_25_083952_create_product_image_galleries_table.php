@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sliders', function (Blueprint $table) {
+        Schema::create('product_image_galleries', function (Blueprint $table) {
             $table->id();
 
-            $table->text('banner')->nullable();
-            $table->string('type')->nullable();
+            $table->integer('product_id')->index('product_id');
+            $table->integer('vendor_id')->index('vendor_id');
+            $table->text('image');
             $table->string('title')->nullable();
-            $table->string('starting_price')->nullable();
-            $table->string('btn_url')->nullable();
+            $table->string('alt')->nullable();
             $table->integer('sort_order')->default(0);
             $table->boolean('status')->nullable();
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sliders');
+        Schema::dropIfExists('product_image_galleries');
     }
 };

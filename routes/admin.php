@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\AdminVendorProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\ProductImageGalleryController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SliderController;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +22,6 @@ Route::post('profile/update/password', [ProfileController::class, 'updatePasswor
 Route::resource('slider', SliderController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('brand', BrandController::class);
+Route::resource('product/image-gallery', ProductImageGalleryController::class);
 Route::resource('product', ProductController::class);
 Route::resource('vendor-profile', AdminVendorProfileController::class);

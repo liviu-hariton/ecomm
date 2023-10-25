@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="sort_order">Order</label>
-                                    <input type="text" name="sort_order" id="sort_order" class="form-control" value="{{ old('sort_order', $slider->sort_order) }}">
+                                    <input type="number" name="sort_order" id="sort_order" class="form-control" value="{{ old('sort_order', $slider->sort_order) }}">
 
                                     @error('sort_order')
                                     <span class="text-danger text-small">{{ $message }}</span>

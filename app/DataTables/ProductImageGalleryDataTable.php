@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Slider;
+use App\Models\ProductImageGallery;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class SliderDataTable extends DataTable
+class ProductImageGalleryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -21,43 +21,39 @@ class SliderDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        /**
-         * Not a big fan of using HTML code inside PHP code (should be loaded from view and / or components)
-         * but for the sake of the tutorial, let it be like this for now
-         *
-         * @TODO move the HTML code in external components
-         */
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $buttons = [
-                    'edit' => '<a href="'.route('admin.slider.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
-                    'delete' => '<a href="'.route('admin.slider.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="slider-table"><i class="fa fa-trash"></i></a>'
+                    'edit' => '<a href="'.route('admin.image-gallery.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route('admin.image-gallery.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productimagegallery-table"><i class="fa fa-trash"></i></a>'
                 ];
 
                 return implode('', $buttons);
             })
-            ->addColumn('banner', function($query) {
-                return '<img src="'.asset($query->banner).'" title="'.$query->title.'" alt="'.$query->title.'" class="img-fluid" />';
+            ->addColumn('image', function($query) {
+                return '<img src="'.asset($query->image).'" title="'.$query->image.'" alt="'.$query->image.'" class="img-fluid" />';
             })
-            ->addColumn('url', function($query) {
-                return '<a href="'.$query->btn_url.'" target="_blank">'.$query->btn_url.' <i class="fas fa-external-link-alt"></i></a>';
+            ->addColumn('vendor', function($query) {
+                return $query->product->vendor->user->name;
             })
             ->addColumn('active', function($query) {
                 return '<label class="custom-switch mt-2">
-                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^Slider" class="custom-switch-input change-status">
+                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^ProductImageGallery" class="custom-switch-input change-status">
                         <span class="custom-switch-indicator"></span>
                       </label>';
             })
-            ->rawColumns(['banner', 'action', 'url', 'active'])
+            ->rawColumns(['image', 'action', 'url', 'active'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Slider $model): QueryBuilder
+    public function query(ProductImageGallery $model): QueryBuilder
     {
-        return $model->newQuery();
+        $base_query = $model->newQuery()->with('product')->where('product_id', request('pid'));
+
+        return $base_query;
     }
 
     /**
@@ -66,11 +62,11 @@ class SliderDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('slider-table')
+                    ->setTableId('productimagegallery-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
-                    ->orderBy(6, 'asc')
+                    ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([
                         Button::make('excel'),
@@ -89,11 +85,10 @@ class SliderDataTable extends DataTable
     {
         return [
             Column::make('id')->width(50)->addClass('align-middle'),
-            Column::make('banner')->width(200),
+            Column::make('vendor')->addClass('align-middle'),
+            Column::make('image')->width(150),
             Column::make('title')->addClass('align-middle'),
-            Column::make('type')->addClass('align-middle'),
-            Column::make('starting_price')->addClass('align-middle'),
-            Column::make('url')->addClass('align-middle'),
+            Column::make('alt')->addClass('align-middle'),
             Column::make('sort_order')->addClass('align-middle text-center'),
             Column::make('active')->addClass('align-middle text-center'),
 
@@ -110,6 +105,6 @@ class SliderDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Slider_' . date('YmdHis');
+        return 'ProductImageGallery_' . date('YmdHis');
     }
 }
