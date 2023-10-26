@@ -31,7 +31,7 @@ class ProductDataTable extends DataTable
                                       </button>
                                       <div class="dropdown-menu">
                                         <a class="dropdown-item" href="'.route('admin.image-gallery.index', ['pid' => $query->id]).'"><i class="fa fa-images"></i> Image gallery</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-th-list"></i> Variants</a>
+                                        <a class="dropdown-item" href="'.route('admin.variant.index', ['pid' => $query->id]).'"><i class="fa fa-th-list"></i> Variants</a>
                                       </div>
                                   </div>',
                     'delete' => '<a href="'.route('admin.product.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="product-table"><i class="fa fa-trash"></i></a>'
