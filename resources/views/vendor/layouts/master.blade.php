@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
     <title>User dashboard</title>
 
     <link rel="icon" type="image/png" href="{{ asset('frontend/images/favicon.png') }}">
@@ -29,14 +30,15 @@
 <body>
 <div class="wsus__dashboard_menu">
     <div class="wsusd__dashboard_user">
-        <img src="{{ asset(auth()->user()->image ?? 'backend/assets/img/avatar/avatar-1.png') }}" alt="{{ auth()->user()->name }}" class="img-fluid">
+        <img src="{{ asset(auth()->user()->image ?? 'backend/assets/img/avatar/avatar-1.png') }}"
+             alt="{{ auth()->user()->name }}" class="img-fluid">
         <p>{{ auth()->user()->name }}</p>
     </div>
 </div>
 
 <section id="wsus__dashboard">
     <div class="container-fluid">
-        @include('vendor.dashboard.layouts.sidebar')
+        @include('vendor.layouts.sidebar')
 
         <div class="row">
             <div class="col-xl-9 col-xxl-10 col-lg-9 ms-auto">
