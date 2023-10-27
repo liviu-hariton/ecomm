@@ -55,4 +55,19 @@ class AdminController extends Controller
             'message' => 'Status has been successfully updated!'
         ]);
     }
+
+    public function changeDefault(Request $request) {
+        $model = str_replace("^", "\\", $request->model);
+
+        $model::where('product_variant_id', $request->vid)->update(['is_default' => 0]);
+
+        $object = $model::findOrFail($request->id);
+        $object->is_default = $request->is_default;
+        $object->save();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Item has been successfully set as default!'
+        ]);
+    }
 }

@@ -7,8 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\ProductImageGallery;
+use App\Models\ProductVariant;
+use App\Models\ProductVariantItem;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -109,6 +113,21 @@ class ProductController extends Controller
         if(!is_null($product->image)) {
             $this->deleteImage($product->image);
         }
+
+        $images = ProductImageGallery::where('product_id', $product->id)->get();
+
+        if(count($images) > 0) {
+            foreach($images as $image) {
+                $this->deleteImage($image->image);
+
+                $image->delete();
+            }
+
+            File::deleteDirectory(public_path('uploads/products/'.$product->id));
+        }
+
+        ProductVariant::where('product_id', $product->id)->delete();
+        ProductVariantItem::where('product_id', $product->id)->delete();
 
         $product->delete();
 

@@ -21,12 +21,12 @@
                 </ul>
             </li>--}}
 
-            <li class="dropdown {{ menuItemActive(['admin.category.*', 'admin.brand.*', 'admin.product.*', 'admin.image-gallery.*', 'admin.variant.*']) }}">
+            <li class="dropdown {{ menuItemActive(['admin.category.*', 'admin.brand.*', 'admin.product.*', 'admin.image-gallery.*', 'admin.variant.*', 'admin.product-variant-item.*']) }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-sitemap"></i><span>Catalogue</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ menuItemActive(['admin.category.*']) }}"><a class="nav-link" href="{{ route('admin.category.index') }}">Categories</a></li>
                     <li class="{{ menuItemActive(['admin.brand.*']) }}"><a class="nav-link" href="{{ route('admin.brand.index') }}">Brands</a></li>
-                    <li class="{{ menuItemActive(['admin.product.*', 'admin.image-gallery.*', 'admin.variant.*']) }}"><a class="nav-link" href="{{ route('admin.product.index') }}">Products</a></li>
+                    <li class="{{ menuItemActive(['admin.product.*', 'admin.image-gallery.*', 'admin.variant.*', 'admin.product-variant-item.*']) }}"><a class="nav-link" href="{{ route('admin.product.index') }}">Products</a></li>
                 </ul>
             </li>
 

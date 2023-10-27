@@ -6,6 +6,7 @@ use App\DataTables\ProductVariantDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
 
 class ProductVariantController extends Controller
@@ -93,6 +94,8 @@ class ProductVariantController extends Controller
     public function destroy(ProductVariant $variant)
     {
         $pid = $variant->product_id;
+
+        ProductVariantItem::where('product_variant_id', $variant->id)->delete();
 
         $variant->delete();
 

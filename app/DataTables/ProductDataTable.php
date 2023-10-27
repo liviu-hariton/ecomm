@@ -86,6 +86,9 @@ class ProductDataTable extends DataTable
 
                 return $output;
             })
+            ->addColumn('variants', function($query) {
+                return $query->variants->count();
+            })
             ->rawColumns(['action', 'approved', 'active', 'url', 'image', 'name', 'stock', 'price'])
             ->setRowId('id');
     }
@@ -131,9 +134,10 @@ class ProductDataTable extends DataTable
             Column::make('id')->width(50)->addClass('align-middle'),
             Column::make('image')->width(80),
             Column::make('name')->addClass('align-middle'),
+            Column::make('variants')->addClass('text-center align-middle'),
             Column::make('url')->addClass('align-middle'),
             Column::make('vendor')->addClass('align-middle'),
-            Column::make('stock')->addClass('align-middle'),
+            Column::make('stock')->addClass('text-center align-middle'),
             Column::make('price')->addClass('text-right align-middle'),
             Column::make('approved')->addClass('text-center align-middle'),
             Column::make('active')->addClass('text-center align-middle'),

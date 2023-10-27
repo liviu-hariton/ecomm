@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\ProductVariant;
+use App\Models\ProductVariantItem;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ProductVariantDataTable extends DataTable
+class ProductVariantItemDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -24,9 +24,8 @@ class ProductVariantDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $buttons = [
-                    'variant_items' => '<a href="'.route('admin.product-variant-item.index', ['vid' => $query->id]).'" class="btn btn-info btn-sm"><i class="fa fa-pencil-alt"></i> Variant items</a>',
-                    'edit' => '<a href="'.route('admin.variant.edit', $query).'" class="btn btn-warning btn-sm ml-1"><i class="fa fa-pencil-alt"></i></a>',
-                    'delete' => '<a href="'.route('admin.variant.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productvariant-table"><i class="fa fa-trash"></i></a>'
+                    'edit' => '<a href="'.route('admin.product-variant-item.edit', ['viid' => $query->id]).'" class="btn btn-warning btn-sm ml-1"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route('admin.product-variant-item.destroy', ['viid' => $query->id]).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productvariantitem-table"><i class="fa fa-trash"></i></a>'
                 ];
 
                 return implode('', $buttons);
@@ -34,28 +33,37 @@ class ProductVariantDataTable extends DataTable
             ->addColumn('vendor', function($query) {
                 return $query->product->vendor->user->name;
             })
+            ->addColumn('product', function($query) {
+                return $query->product->name;
+            })
             ->addColumn('variant name', function($query) {
+                return $query->product_variant->name;
+            })
+            ->addColumn('item name', function($query) {
                 return $query->name;
             })
-            ->addColumn('items', function($query) {
-                return $query->items->count();
-            })
-            ->addColumn('active', function($query) {
+            ->addColumn('default', function($query) {
                 return '<label class="custom-switch mt-2">
-                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^ProductVariant" class="custom-switch-input change-status">
+                        <input type="checkbox" id="default-'.$query->id.'" value="'.$query->is_default.'" '.($query->is_default === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-vid="'.$query->product_variant_id.'" data-model="App^Models^ProductVariantItem" class="custom-switch-input defaults change-default">
                         <span class="custom-switch-indicator"></span>
                       </label>';
             })
-            ->rawColumns(['action', 'active'])
+            ->addColumn('active', function($query) {
+                return '<label class="custom-switch mt-2">
+                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^ProductVariantItem" class="custom-switch-input change-status">
+                        <span class="custom-switch-indicator"></span>
+                      </label>';
+            })
+            ->rawColumns(['action', 'active', 'default'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(ProductVariant $model): QueryBuilder
+    public function query(ProductVariantItem $model): QueryBuilder
     {
-        $base_query = $model->newQuery()->with('product')->where('product_id', request('pid'));
+        $base_query = $model->newQuery()->with('product_variant', 'product')->where('product_variant_id', request('vid'));
 
         return $base_query;
     }
@@ -66,11 +74,11 @@ class ProductVariantDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('productvariant-table')
+                    ->setTableId('productvariantitem-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
-                    ->orderBy(0, 'desc')
+                    ->orderBy(0)
                     ->selectStyleSingle()
                     ->buttons([
                         Button::make('excel'),
@@ -90,8 +98,11 @@ class ProductVariantDataTable extends DataTable
         return [
             Column::make('id')->width(50)->addClass('align-middle'),
             Column::make('vendor')->addClass('align-middle'),
+            Column::make('product')->addClass('align-middle'),
             Column::make('variant name')->addClass('align-middle'),
-            Column::make('items')->addClass('align-middle'),
+            Column::make('item name')->addClass('align-middle'),
+            Column::make('price')->addClass('text-right align-middle'),
+            Column::make('default')->addClass('align-middle text-center'),
             Column::make('active')->addClass('align-middle text-center'),
 
             Column::computed('action')
@@ -107,6 +118,6 @@ class ProductVariantDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'ProductVariant_' . date('YmdHis');
+        return 'ProductVariantItem_' . date('YmdHis');
     }
 }
