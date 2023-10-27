@@ -67,16 +67,14 @@ class ProductVariantItemController extends Controller
 
         toastr('Product variant updated successfully');
 
-        return redirect()->route('admin.product-variant-item.edit', [
-            'viid' => $productVariantItem->id
-        ]);
+        return redirect()->route('admin.item.edit', $productVariantItem);
     }
 
-    public function destroy(ProductVariantItem $productVariantItem)
+    public function destroy(ProductVariantItem $item)
     {
-        $vid = $productVariantItem->product_variant_id;
+        $vid = $item->product_variant_id;
 
-        $productVariantItem->delete();
+        $item->delete();
 
         if(\request()->ajax()) {
             return response([

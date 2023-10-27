@@ -14,7 +14,7 @@
                             <h4>Edit item for &quot;{{ $variant_item->product_variant->name }}&quot; variant of &quot;{{ $variant_item->product->name }}&quot;</h4>
 
                             <div class="card-header-action">
-                                <form method="POST" action="{{ route('admin.product-variant-item.destroy', ['viid' => $variant_item->id]) }}">
+                                <form method="POST" action="{{ route('admin.item.destroy', $variant_item) }}">
                                     @csrf
                                     @method('DELETE')
 
@@ -26,7 +26,7 @@
                             </div>
                         </div>
 
-                        <form method="post" action="{{ route('admin.product-variant-item.update') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('admin.item.update', $variant_item) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
