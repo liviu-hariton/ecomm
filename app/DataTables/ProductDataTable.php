@@ -25,12 +25,14 @@ class ProductDataTable extends DataTable
             ->addColumn('action', function($query) {
                 $buttons = [
                     'edit' => '<a href="'.route('admin.product.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
-                    'options' => '<button type="button" class="btn btn-sm btn-primary dropdown-toggle ml-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fa fa-cogs"></i>
-                                  </button>
-                                  <div class="dropdown-menu dropleft">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-images"></i> Image gallery</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-th-list"></i> Variants</a>
+                    'options' => '<div class="dropdown dropleft d-inline">
+                                      <button type="button" class="btn btn-sm btn-primary dropdown-toggle ml-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-cogs"></i>
+                                      </button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="'.route('admin.image-gallery.index', ['pid' => $query->id]).'"><i class="fa fa-images"></i> Image gallery</a>
+                                        <a class="dropdown-item" href="'.route('admin.variant.index', ['pid' => $query->id]).'"><i class="fa fa-th-list"></i> Variants</a>
+                                      </div>
                                   </div>',
                     'delete' => '<a href="'.route('admin.product.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="product-table"><i class="fa fa-trash"></i></a>'
                 ];
@@ -84,6 +86,9 @@ class ProductDataTable extends DataTable
 
                 return $output;
             })
+            ->addColumn('variants', function($query) {
+                return $query->variants->count();
+            })
             ->rawColumns(['action', 'approved', 'active', 'url', 'image', 'name', 'stock', 'price'])
             ->setRowId('id');
     }
@@ -129,9 +134,10 @@ class ProductDataTable extends DataTable
             Column::make('id')->width(50)->addClass('align-middle'),
             Column::make('image')->width(80),
             Column::make('name')->addClass('align-middle'),
+            Column::make('variants')->addClass('text-center align-middle'),
             Column::make('url')->addClass('align-middle'),
             Column::make('vendor')->addClass('align-middle'),
-            Column::make('stock')->addClass('align-middle'),
+            Column::make('stock')->addClass('text-center align-middle'),
             Column::make('price')->addClass('text-right align-middle'),
             Column::make('approved')->addClass('text-center align-middle'),
             Column::make('active')->addClass('text-center align-middle'),

@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Slider;
+use App\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class SliderDataTable extends DataTable
+class ProductVariantDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -21,43 +21,43 @@ class SliderDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        /**
-         * Not a big fan of using HTML code inside PHP code (should be loaded from view and / or components)
-         * but for the sake of the tutorial, let it be like this for now
-         *
-         * @TODO move the HTML code in external components
-         */
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $buttons = [
-                    'edit' => '<a href="'.route('admin.slider.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
-                    'delete' => '<a href="'.route('admin.slider.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="slider-table"><i class="fa fa-trash"></i></a>'
+                    'variant_items' => '<a href="'.route('admin.product-variant-item.index', ['vid' => $query->id]).'" class="btn btn-info btn-sm"><i class="fa fa-pencil-alt"></i> Variant items</a>',
+                    'edit' => '<a href="'.route('admin.variant.edit', $query).'" class="btn btn-warning btn-sm ml-1"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route('admin.variant.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productvariant-table"><i class="fa fa-trash"></i></a>'
                 ];
 
                 return implode('', $buttons);
             })
-            ->addColumn('banner', function($query) {
-                return '<img src="'.asset($query->banner).'" title="'.$query->title.'" alt="'.$query->title.'" class="img-fluid" />';
+            ->addColumn('vendor', function($query) {
+                return $query->product->vendor->user->name;
             })
-            ->addColumn('url', function($query) {
-                return '<a href="'.$query->btn_url.'" target="_blank">'.$query->btn_url.' <i class="fas fa-external-link-alt"></i></a>';
+            ->addColumn('variant name', function($query) {
+                return $query->name;
+            })
+            ->addColumn('items', function($query) {
+                return $query->items->count();
             })
             ->addColumn('active', function($query) {
                 return '<label class="custom-switch mt-2">
-                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^Slider" class="custom-switch-input change-status">
+                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^ProductVariant" class="custom-switch-input change-status">
                         <span class="custom-switch-indicator"></span>
                       </label>';
             })
-            ->rawColumns(['banner', 'action', 'url', 'active'])
+            ->rawColumns(['action', 'active'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Slider $model): QueryBuilder
+    public function query(ProductVariant $model): QueryBuilder
     {
-        return $model->newQuery();
+        $base_query = $model->newQuery()->with('product')->where('product_id', request('pid'));
+
+        return $base_query;
     }
 
     /**
@@ -66,11 +66,11 @@ class SliderDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('slider-table')
+                    ->setTableId('productvariant-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
-                    ->orderBy(6, 'asc')
+                    ->orderBy(0, 'desc')
                     ->selectStyleSingle()
                     ->buttons([
                         Button::make('excel'),
@@ -89,18 +89,15 @@ class SliderDataTable extends DataTable
     {
         return [
             Column::make('id')->width(50)->addClass('align-middle'),
-            Column::make('banner')->width(200),
-            Column::make('title')->addClass('align-middle'),
-            Column::make('type')->addClass('align-middle'),
-            Column::make('starting_price')->addClass('align-middle'),
-            Column::make('url')->addClass('align-middle'),
-            Column::make('sort_order')->addClass('align-middle text-center'),
+            Column::make('vendor')->addClass('align-middle'),
+            Column::make('variant name')->addClass('align-middle'),
+            Column::make('items')->addClass('align-middle'),
             Column::make('active')->addClass('align-middle text-center'),
 
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(200)
                 ->addClass('align-middle text-center'),
         ];
     }
@@ -110,6 +107,6 @@ class SliderDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Slider_' . date('YmdHis');
+        return 'ProductVariant_' . date('YmdHis');
     }
 }
