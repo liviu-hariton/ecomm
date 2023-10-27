@@ -18,10 +18,10 @@
                                     @csrf
                                     @method('DELETE')
 
-                                    <a href="{{ route('admin.product-variant-item.create', ['vid' => $variant_item->product_variant_id]) }}" class="btn btn-success"><i class="fa fa-plus"></i> Create variant item</a>
-                                    <a href="{{ route('admin.product-variant-item.index', ['vid' => $variant_item->product_variant_id]) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to variant items</a>
+                                    <a href="{{ route('admin.item.create', ['vid' => $variant_item->product_variant_id]) }}" class="btn btn-success"><i class="fa fa-plus"></i> Create variant item</a>
+                                    <a href="{{ route('admin.item.index', ['vid' => $variant_item->product_variant_id]) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to variant items</a>
                                     <a href="{{ route('admin.product.edit', $variant_item->product) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to product</a>
-                                    <a href="{{ route('admin.product-variant-item.destroy', ['viid' => $variant_item->id]) }}" onclick="event.preventDefault();this.closest('form').submit();" class="btn btn-danger"><i class="fa fa-trash"></i> Delete variant item</a>
+                                    <a href="{{ route('admin.item.destroy', $variant_item) }}" onclick="event.preventDefault();this.closest('form').submit();" class="btn btn-danger"><i class="fa fa-trash"></i> Delete variant item</a>
                                 </form>
                             </div>
                         </div>

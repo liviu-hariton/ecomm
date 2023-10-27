@@ -14,7 +14,7 @@
                             <h4>Items for &quot;{{ $variant->name }}&quot; variant of &quot;{{ $variant->product->name }}&quot;</h4>
 
                             <div class="card-header-action">
-                                <a href="{{ route('admin.product-variant-item.create', ['vid' => $variant->id]) }}" class="btn btn-success"><i class="fa fa-plus"></i> Create variant item</a>
+                                <a href="{{ route('admin.item.create', ['vid' => $variant->id]) }}" class="btn btn-success"><i class="fa fa-plus"></i> Create variant item</a>
                                 <a href="{{ route('admin.variant.index', ['pid' => $variant->product->id]) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to variants</a>
                                 <a href="{{ route('admin.product.edit', $variant->product) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to product</a>
                             </div>

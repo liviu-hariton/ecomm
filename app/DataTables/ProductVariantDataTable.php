@@ -24,7 +24,7 @@ class ProductVariantDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $buttons = [
-                    'variant_items' => '<a href="'.route('admin.product-variant-item.index', ['vid' => $query->id]).'" class="btn btn-info btn-sm"><i class="fa fa-pencil-alt"></i> Variant items</a>',
+                    'variant_items' => '<a href="'.route('admin.item.index', ['vid' => $query->id]).'" class="btn btn-info btn-sm"><i class="fa fa-pencil-alt"></i> Variant items</a>',
                     'edit' => '<a href="'.route('admin.variant.edit', $query).'" class="btn btn-warning btn-sm ml-1"><i class="fa fa-pencil-alt"></i></a>',
                     'delete' => '<a href="'.route('admin.variant.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productvariant-table"><i class="fa fa-trash"></i></a>'
                 ];
@@ -55,7 +55,7 @@ class ProductVariantDataTable extends DataTable
      */
     public function query(ProductVariant $model): QueryBuilder
     {
-        $base_query = $model->newQuery()->with('product')->where('product_id', request('pid'));
+        $base_query = $model->newQuery()->with('product', 'items')->where('product_id', request('pid'));
 
         return $base_query;
     }

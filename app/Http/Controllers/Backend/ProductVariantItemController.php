@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend;
 use App\DataTables\ProductVariantItemDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductVariantItemRequest;
-use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
@@ -38,15 +37,20 @@ class ProductVariantItemController extends Controller
 
         toastr('Product variant item created successfully');
 
-        return redirect()->route('admin.product-variant-item.index', [
+        return redirect()->route('admin.item.index', [
             'vid' => $request->product_variant_id
         ]);
     }
 
-    public function edit(Request $request)
+    public function show(Request $request)
+    {
+        //
+    }
+
+    public function edit(ProductVariantItem $item)
     {
         return view('admin.product.variant.item.edit', [
-            'variant_item' => ProductVariantItem::with('product_variant', 'product')->findOrFail($request->viid)
+            'variant_item' => $item
         ]);
     }
 
@@ -68,10 +72,8 @@ class ProductVariantItemController extends Controller
         ]);
     }
 
-    public function destroy(Request $request)
+    public function destroy(ProductVariantItem $productVariantItem)
     {
-        $productVariantItem = ProductVariantItem::findOrFail($request->viid);
-
         $vid = $productVariantItem->product_variant_id;
 
         $productVariantItem->delete();
@@ -84,7 +86,7 @@ class ProductVariantItemController extends Controller
         } else {
             toastr('Item deleted successfully!');
 
-            return redirect()->route('admin.product-variant-item.index', [
+            return redirect()->route('admin.item.index', [
                 'vid' => $vid
             ]);
         }

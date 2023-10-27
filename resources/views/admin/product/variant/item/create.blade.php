@@ -14,12 +14,12 @@
                             <h4>New item for &quot;{{ $variant->name }}&quot; variant of &quot;{{ $variant->product->name }}&quot;</h4>
 
                             <div class="card-header-action">
-                                <a href="{{ route('admin.product-variant-item.index', ['vid' => $variant->id]) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to variant items</a>
+                                <a href="{{ route('admin.item.index', ['vid' => $variant->id]) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to variant items</a>
                                 <a href="{{ route('admin.product.edit', $variant->product) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to product</a>
                             </div>
                         </div>
 
-                        <form method="post" action="{{ route('admin.product-variant-item.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('admin.item.store') }}" enctype="multipart/form-data">
                             @csrf
 
                             <input type="hidden" name="product_variant_id" id="product_variant_id" value="{{ $variant->id }}" />
