@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminVendorProfileRequest;
 use App\Models\Vendor;
+use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 
 class VendorShopProfileController extends Controller
 {
+    use ImageUploadTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -53,9 +57,23 @@ class VendorShopProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AdminVendorProfileRequest $request, Vendor $vendor)
     {
-        //
+        $validated_data = $request->validated();
+
+        if($request->hasFile('banner')) {
+            if(\File::exists(public_path($vendor->banner))) {
+                \File::delete(public_path($vendor->banner));
+            }
+
+            $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads/vendors');
+        }
+
+        Vendor::where('user_id', auth()->user()->id)->update($validated_data);
+
+        toastr('Your profile was updated successfully');
+
+        return redirect()->route('vendor.shop-profile.index');
     }
 
     /**

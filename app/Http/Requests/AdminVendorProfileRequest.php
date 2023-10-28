@@ -31,6 +31,8 @@ class AdminVendorProfileRequest extends FormRequest
             'facebook' => 'url',
             'instagram' => 'url',
             'twitter' => 'url',
+            'description' => 'sometimes',
+            'shop_name' => 'required|max:200',
         ];
     }
 }

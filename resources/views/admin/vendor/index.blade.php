@@ -34,6 +34,14 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="shop_name">Shop name</label>
+                                    <input type="text" name="shop_name" id="shop_name" class="form-control" value="{{ old('shop_name', $vendor->shop_name) }}">
+
+                                    @error('shop_name')
+                                    <span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
                                     <label for="phone">Phone</label>
                                     <input type="tel" name="phone" id="phone" class="form-control" value="{{ old('phone', $vendor->phone) }}">
 

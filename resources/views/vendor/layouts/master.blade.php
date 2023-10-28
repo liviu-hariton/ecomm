@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/ranger_style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/jquery.classycountdown.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/venobox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/modules/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
 </head>
@@ -72,6 +73,8 @@
 <script src="{{ asset('frontend/js/isotope.pkgd.min.js') }}"></script>
 <script src="{{ asset('frontend/js/venobox.min.js') }}"></script>
 <script src="{{ asset('frontend/js/jquery.classycountdown.js') }}"></script>
+<script src="{{ asset('vendor/modules/summernote/summernote-bs4.js') }}"></script>
+<script src="{{ asset('vendor/js/scripts.js') }}"></script>
 <script src="{{ asset('frontend/js/main.js') }}"></script>
 </body>
 </html>

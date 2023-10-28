@@ -9,98 +9,101 @@
 
                     <div class="wsus__dashboard_profile">
                         <div class="wsus__dash_pro_area">
-                            <form method="post" action="{{ route('admin.vendor-profile.update', $vendor) }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ route('vendor.shop-profile.update', $vendor) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
 
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            @if(file_exists($vendor->banner))
-                                                <img src="{{ asset($vendor->banner) }}" class="img-fluid" title="{{ $vendor->user->name }}" alt="{{ $vendor->user->name }}" />
-                                            @endif
-                                        </div>
-                                        <div class="col-9">
-                                            <div class="form-group">
-                                                <label for="banner">Banner</label>
-                                                <input type="file" name="banner" id="banner" class="form-control">
-
-                                                @error('banner')
-                                                <span class="text-danger text-small">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                <div class="row mb-3">
+                                    <div class="col-3">
+                                        @if(file_exists($vendor->banner))
+                                            <img src="{{ asset($vendor->banner) }}" class="img-fluid" title="{{ $vendor->user->name }}" alt="{{ $vendor->user->name }}" />
+                                        @endif
                                     </div>
+                                    <div class="col-9">
+                                        <div class="wsus__dash_pro_single">
+                                            <i class="far fa-image"></i>
+                                            <input type="file" name="banner" id="banner">
 
-                                    <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <input type="tel" name="phone" id="phone" class="form-control" value="{{ old('phone', $vendor->phone) }}">
-
-                                        @error('phone')
-                                        <span class="text-danger text-small">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $vendor->email) }}">
-
-                                        @error('email')
-                                        <span class="text-danger text-small">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="address">Address</label>
-                                        <input type="text" name="address" id="address" class="form-control" value="{{ old('address', $vendor->address) }}">
-
-                                        @error('address')
-                                        <span class="text-danger text-small">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description">Description</label>
-                                        <textarea name="description" id="description" class="summernote" rows="5">{{ old('description', $vendor->description) }}</textarea>
-
-                                        @error('description')
-                                        <span class="text-danger text-small">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                <label for="facebook">Facebook</label>
-                                                <input type="url" name="facebook" id="facebook" class="form-control" value="{{ old('facebook', $vendor->facebook) }}">
-
-                                                @error('facebook')
-                                                <span class="text-danger text-small">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                <label for="instagram">Instagram</label>
-                                                <input type="url" name="instagram" id="instagram" class="form-control" value="{{ old('instagram', $vendor->instagram) }}">
-
-                                                @error('instagram')
-                                                <span class="text-danger text-small">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                <label for="twitter">Twitter</label>
-                                                <input type="url" name="twitter" id="twitter" class="form-control" value="{{ old('twitter', $vendor->twitter) }}">
-
-                                                @error('twitter')
-                                                <span class="text-danger text-small">{{ $message }}</span>
-                                                @enderror
-                                            </div>
+                                            @error('banner')
+                                            <br /><span class="text-danger text-small">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="card-footer">
-                                    <button class="btn btn-success mr-1" type="submit">Update profile <i class="fa fa-check-circle"></i></button>
+                                <div class="wsus__dash_pro_single">
+                                    <i class="far fa-store-alt"></i>
+                                    <input type="text" name="shop_name" id="shop_name" value="{{ old('shop_name', $vendor->shop_name) }}">
+
+                                    @error('shop_name')
+                                    <br /><span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
                                 </div>
+                                <div class="wsus__dash_pro_single">
+                                    <i class="far fa-phone-alt"></i>
+                                    <input type="tel" name="phone" id="phone" value="{{ old('phone', $vendor->phone) }}">
+
+                                    @error('phone')
+                                    <br /><span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="wsus__dash_pro_single">
+                                    <i class="fal fa-envelope-open"></i>
+                                    <input type="email" name="email" id="email" value="{{ old('email', $vendor->email) }}">
+
+                                    @error('email')
+                                    <br /><span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="wsus__dash_pro_single">
+                                    <i class="fal fa-building"></i>
+                                    <input type="text" name="address" id="address" value="{{ old('address', $vendor->address) }}">
+
+                                    @error('address')
+                                    <br /><span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="wsus__dash_pro_single">
+                                    <textarea name="description" id="description" class="summernote" rows="5" placeholder="About you">{{ old('description', $vendor->description) }}</textarea>
+
+                                    @error('description')
+                                    <br /><span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="wsus__dash_pro_single">
+                                            <i class="fab fa-facebook"></i>
+                                            <input type="url" name="facebook" id="facebook" value="{{ old('facebook', $vendor->facebook) }}">
+
+                                            @error('facebook')
+                                            <br /><span class="text-danger text-small">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="wsus__dash_pro_single">
+                                            <i class="fab fa-instagram"></i>
+                                            <br /><input type="url" name="instagram" id="instagram" value="{{ old('instagram', $vendor->instagram) }}">
+
+                                            @error('instagram')
+                                            <span class="text-danger text-small">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="wsus__dash_pro_single">
+                                            <i class="fab fa-twitter"></i>
+                                            <input type="url" name="twitter" id="twitter" value="{{ old('twitter', $vendor->twitter) }}">
+
+                                            @error('twitter')
+                                            <br /><span class="text-danger text-small">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="common_btn" type="submit">Update profile <i class="fa fa-check-circle"></i></button>
                             </form>
                         </div>
                     </div>
