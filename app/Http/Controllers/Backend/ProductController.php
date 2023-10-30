@@ -32,8 +32,6 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
-
-
         return view(userRole().'.product.create', [
             'categories_tree' => (new CategoryController)->categoriesTree(
                 selected: [$request->category_id]
@@ -80,6 +78,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        $this->authorize('view', $product);
+
         return view(userRole().'.product.edit', [
             'product' => $product,
             'categories_tree' => (new CategoryController)->categoriesTree(

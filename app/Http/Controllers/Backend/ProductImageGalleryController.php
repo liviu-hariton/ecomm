@@ -21,8 +21,12 @@ class ProductImageGalleryController extends Controller
      */
     public function index(ProductImageGalleryDataTable $dataTable)
     {
+        $product = Product::findOrFail(\request()->pid);
+
+        $this->authorize('view', $product);
+
         return $dataTable->render(userRole().'.product.image-gallery.index', [
-            'product' => Product::findOrFail(\request()->pid),
+            'product' => $product,
             'vendor' => auth()->user()->vendor
         ]);
     }
@@ -72,6 +76,8 @@ class ProductImageGalleryController extends Controller
      */
     public function edit(ProductImageGallery $imageGallery)
     {
+        $this->authorize('view', $imageGallery);
+
         return view(userRole().'.product.image-gallery.edit', [
             'image_gallery' => $imageGallery
         ]);

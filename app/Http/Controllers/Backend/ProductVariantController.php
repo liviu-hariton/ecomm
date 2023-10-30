@@ -16,8 +16,12 @@ class ProductVariantController extends Controller
      */
     public function index(ProductVariantDataTable $dataTable)
     {
+        $product = Product::findOrFail(\request()->pid);
+
+        $this->authorize('view', $product);
+
         return $dataTable->render(userRole().'.product.variant.index', [
-            'product' => Product::findOrFail(\request()->pid),
+            'product' => $product,
         ]);
     }
 
@@ -26,8 +30,12 @@ class ProductVariantController extends Controller
      */
     public function create(Request $request)
     {
+        $product = Product::findOrFail($request->pid);
+
+        $this->authorize('view', $product);
+
         return view(userRole().'.product.variant.create', [
-            'product' => Product::findOrFail(\request()->pid)
+            'product' => $product
         ]);
     }
 
@@ -66,6 +74,8 @@ class ProductVariantController extends Controller
      */
     public function edit(ProductVariant $variant)
     {
+        $this->authorize('view', $variant);
+
         return view(userRole().'.product.variant.edit', [
             'variant' => $variant
         ]);

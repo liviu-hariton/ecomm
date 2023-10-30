@@ -13,15 +13,23 @@ class ProductVariantItemController extends Controller
 {
     public function index(ProductVariantItemDataTable $itemDataTable)
     {
+        $variant = ProductVariant::with('product')->findOrFail(\request()->vid);
+
+        $this->authorize('view', $variant);
+
         return $itemDataTable->render(userRole().'.product.variant.item.index', [
-            'variant' => ProductVariant::with('product')->findOrFail(\request()->vid),
+            'variant' => $variant,
         ]);
     }
 
     public function create(Request $request)
     {
+        $variant = ProductVariant::with('product')->findOrFail($request->vid);
+
+        $this->authorize('view', $variant);
+
         return view(userRole().'.product.variant.item.create', [
-            'variant' => ProductVariant::with('product')->findOrFail($request->vid),
+            'variant' => $variant,
         ]);
     }
 
@@ -49,6 +57,8 @@ class ProductVariantItemController extends Controller
 
     public function edit(ProductVariantItem $item)
     {
+        $this->authorize('view', $item);
+
         return view(userRole().'.product.variant.item.edit', [
             'variant_item' => $item
         ]);
