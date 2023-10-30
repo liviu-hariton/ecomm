@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\ProductVariantController;
 use App\Http\Controllers\Backend\ProductVariantItemController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SliderController;
+use App\Http\Controllers\Backend\VendorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -33,5 +34,7 @@ Route::resource('product/image-gallery', ProductImageGalleryController::class);
 Route::resource('product/variant/item', ProductVariantItemController::class);
 Route::resource('product/variant', ProductVariantController::class);
 Route::resource('product', ProductController::class);
+
+Route::resource('vendor', VendorController::class);
 
 Route::resource('vendor-profile', AdminVendorProfileController::class);

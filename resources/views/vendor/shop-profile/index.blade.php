@@ -40,6 +40,14 @@
                                     @enderror
                                 </div>
                                 <div class="wsus__dash_pro_single">
+                                    <i class="far fa-globe"></i>
+                                    <input type="text" name="slug" id="shop_name" value="{{ old('slug', $vendor->slug) }}">
+
+                                    @error('slug')
+                                    <br /><span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="wsus__dash_pro_single">
                                     <i class="far fa-phone-alt"></i>
                                     <input type="tel" name="phone" id="phone" value="{{ old('phone', $vendor->phone) }}">
 

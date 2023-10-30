@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Brand;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class BrandDataTable extends DataTable
+class VendorDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -24,8 +24,8 @@ class BrandDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $buttons = [
-                    'edit' => '<a href="'.route('admin.brand.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
-                    'delete' => '<a href="'.route('admin.brand.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="brand-table"><i class="fa fa-trash"></i></a>'
+                    'edit' => '<a href="'.route('admin.vendor.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route('admin.vendor.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="vendor-table"><i class="fa fa-trash"></i></a>'
                 ];
 
                 return implode('', $buttons);
@@ -34,33 +34,23 @@ class BrandDataTable extends DataTable
                 return '<a href="'.$query->slug.'" target="_blank">'.$query->slug.' <i class="fas fa-external-link-alt"></i></a>';
             })
             ->addColumn('logo', function($query) {
-                return '<img src="'.asset($query->logo).'" title="'.$query->name.'" alt="'.$query->name.'" class="img-fluid" />';
-            })
-            ->addColumn('active', function($query) {
-                return '<label class="custom-switch mt-2">
-                        <input type="checkbox" id="status-'.$query->id.'" value="'.$query->status.'" '.($query->status === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^Brand" class="custom-switch-input change-status">
-                        <span class="custom-switch-indicator"></span>
-                      </label>';
-            })
-            ->addColumn('featured', function($query) {
-                return '<label class="custom-switch mt-2">
-                        <input type="checkbox" id="featured-'.$query->id.'" value="'.$query->featured.'" '.($query->featured === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^Brand" class="custom-switch-input change-featured">
-                        <span class="custom-switch-indicator"></span>
-                      </label>';
+                return '<img src="'.asset($query->banner).'" title="'.$query->name.'" alt="'.$query->name.'" class="img-fluid" />';
             })
             ->addColumn('products', function($query) {
-                return $query->products->count();
+                $pcount = $query->products->count();
+
+                return $pcount > 0 ? '<a href="'.route('admin.product.index', ['vid' => $query->id]).'" class="btn btn-sm btn-secondary"><i class="fa fa-th-list"></i> '.$pcount.'</a>' : $pcount;
             })
-            ->rawColumns(['logo', 'action', 'featured', 'active', 'url'])
+            ->rawColumns(['logo', 'action', 'url', 'products'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Brand $model): QueryBuilder
+    public function query(Vendor $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->where('user_id', '<>', auth()->user()->id);
     }
 
     /**
@@ -69,7 +59,7 @@ class BrandDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('brand-table')
+                    ->setTableId('vendor-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -91,13 +81,13 @@ class BrandDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->width(50)->addClass('align-middle'),
+            Column::make('id')->addClass('align-middle'),
             Column::make('logo')->width(100),
-            Column::make('name')->addClass('align-middle'),
+            Column::make('shop_name')->addClass('align-middle'),
+            Column::make('phone')->addClass('align-middle'),
+            Column::make('email')->addClass('align-middle'),
             Column::make('url')->addClass('align-middle'),
             Column::make('products')->addClass('align-middle text-center'),
-            Column::make('featured')->addClass('text-center align-middle'),
-            Column::make('active')->addClass('text-center align-middle'),
 
             Column::computed('action')
                 ->exportable(false)
@@ -112,6 +102,6 @@ class BrandDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Brand_' . date('YmdHis');
+        return 'Vendor_' . date('YmdHis');
     }
 }

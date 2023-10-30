@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->integer('user_id')->nullable()->index('uid');
+            $table->string('shop_name')->nullable();
+            $table->string('slug')->nullable();
             $table->text('banner')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();

@@ -17,7 +17,7 @@ class AdminVendorProfileController extends Controller
      */
     public function index(Vendor $vendor)
     {
-        return view('admin.vendor.index', [
+        return view('admin.vendor-profile.index', [
             'vendor' => $vendor->load('user.user')->find(1)
         ]);
     }
