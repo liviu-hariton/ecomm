@@ -62,7 +62,13 @@ class ProductDataTable extends DataTable
                 return $output;
             })
             ->addColumn('vendor', function($query) {
-                return $query->vendor->user->name;
+                if(auth()->user()->id === $query->vendor->user_id) {
+                    $output = '<a href="'.route('admin.vendor-profile.index').'"><i class="fas fa-user-circle"></i> '.auth()->user()->name.'</a>';
+                } else {
+                    $output = '<a href="'.route('admin.vendor.edit', $query->vendor).'"><i class="fas fa-user-circle"></i> '.$query->vendor->user->name.'</a>';
+                }
+
+                return $output;
             })
             ->addColumn('stock', function($query) {
                 return '<span class="badge badge-primary">'.$query->qty.'</span>';
@@ -101,7 +107,7 @@ class ProductDataTable extends DataTable
             ->addColumn('variants', function($query) {
                 return $query->variants->count();
             })
-            ->rawColumns(['action', 'approved', 'active', 'url', 'image', 'name', 'stock', 'price'])
+            ->rawColumns(['action', 'approved', 'active', 'url', 'image', 'name', 'stock', 'price', 'vendor'])
             ->setRowId('id');
     }
 
@@ -114,6 +120,10 @@ class ProductDataTable extends DataTable
             ->when(auth()->user()->role !== 'admin', function($query) {
                 $query->where('vendor_id', auth()->user()->vendor->id);
             });
+
+        if((request()->vid) !== null) {
+            $base_query->where('vendor_id', request()->vid);
+        }
 
         return $base_query;
     }

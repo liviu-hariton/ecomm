@@ -20,6 +20,7 @@
 
                                     <a href="{{ route('admin.vendor.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> Create vendor</a>
                                     <a href="{{ route('admin.vendor.index') }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to vendors</a>
+                                    <a href="{{ route('admin.product.index', ['vid' => $vendor->id]) }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to products</a>
                                     <a href="{{ route('admin.vendor.destroy', $vendor) }}" onclick="event.preventDefault();this.closest('form').submit();" class="btn btn-danger"><i class="fa fa-trash"></i> Delete vendor</a>
                                 </form>
                             </div>

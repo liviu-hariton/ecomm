@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\ProductImageGallery;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantItem;
+use App\Models\Vendor;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -24,7 +25,9 @@ class ProductController extends Controller
      */
     public function index(ProductDataTable $dataTable)
     {
-        return $dataTable->render(userRole().'.product.index');
+        return $dataTable->render(userRole().'.product.index', [
+            'vendor' => request()->vid !== null ? Vendor::findOrFail(\request()->vid) : null
+        ]);
     }
 
     /**
