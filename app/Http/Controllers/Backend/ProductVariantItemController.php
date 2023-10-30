@@ -13,14 +13,14 @@ class ProductVariantItemController extends Controller
 {
     public function index(ProductVariantItemDataTable $itemDataTable)
     {
-        return $itemDataTable->render('admin.product.variant.item.index', [
+        return $itemDataTable->render(userRole().'.product.variant.item.index', [
             'variant' => ProductVariant::with('product')->findOrFail(\request()->vid),
         ]);
     }
 
     public function create(Request $request)
     {
-        return view('admin.product.variant.item.create', [
+        return view(userRole().'.product.variant.item.create', [
             'variant' => ProductVariant::with('product')->findOrFail($request->vid),
         ]);
     }
@@ -37,7 +37,7 @@ class ProductVariantItemController extends Controller
 
         toastr('Product variant item created successfully');
 
-        return redirect()->route('admin.item.index', [
+        return redirect()->route(userRole().'.item.index', [
             'vid' => $request->product_variant_id
         ]);
     }
@@ -49,7 +49,7 @@ class ProductVariantItemController extends Controller
 
     public function edit(ProductVariantItem $item)
     {
-        return view('admin.product.variant.item.edit', [
+        return view(userRole().'.product.variant.item.edit', [
             'variant_item' => $item
         ]);
     }
@@ -67,7 +67,7 @@ class ProductVariantItemController extends Controller
 
         toastr('Product variant updated successfully');
 
-        return redirect()->route('admin.item.edit', $productVariantItem);
+        return redirect()->route(userRole().'.item.edit', $productVariantItem);
     }
 
     public function destroy(ProductVariantItem $item)
@@ -84,7 +84,7 @@ class ProductVariantItemController extends Controller
         } else {
             toastr('Item deleted successfully!');
 
-            return redirect()->route('admin.item.index', [
+            return redirect()->route(userRole().'.item.index', [
                 'vid' => $vid
             ]);
         }

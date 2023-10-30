@@ -24,17 +24,17 @@ class ProductDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $buttons = [
-                    'edit' => '<a href="'.route('admin.product.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
+                    'edit' => '<a href="'.route(userRole().'.product.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
                     'options' => '<div class="dropdown dropleft d-inline">
                                       <button type="button" class="btn btn-sm btn-primary dropdown-toggle ml-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-cogs"></i>
                                       </button>
                                       <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="'.route('admin.image-gallery.index', ['pid' => $query->id]).'"><i class="fa fa-images"></i> Image gallery</a>
-                                        <a class="dropdown-item" href="'.route('admin.variant.index', ['pid' => $query->id]).'"><i class="fa fa-th-list"></i> Variants</a>
+                                        <a class="dropdown-item" href="'.route(userRole().'.image-gallery.index', ['pid' => $query->id]).'"><i class="fa fa-images"></i> Image gallery</a>
+                                        <a class="dropdown-item" href="'.route(userRole().'.variant.index', ['pid' => $query->id]).'"><i class="fa fa-th-list"></i> Variants</a>
                                       </div>
                                   </div>',
-                    'delete' => '<a href="'.route('admin.product.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="product-table"><i class="fa fa-trash"></i></a>'
+                    'delete' => '<a href="'.route(userRole().'.product.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="product-table"><i class="fa fa-trash"></i></a>'
                 ];
 
                 return implode('', $buttons);
@@ -45,11 +45,19 @@ class ProductDataTable extends DataTable
             ->addColumn('name', function($query) {
                 $output = '<strong>'.$query->name.'</strong>';
 
-                $output .= '<ul class="list-unstyled mt-2">
-                                <li class="text-small">SKU: '.$query->sku.' </li>
-                                <li class="text-small">Category: <a href="'.route('admin.category.show', $query->category).'">'.$query->category->name.'</a></li>
-                                <li class="text-small">Brand: <a href="'.route('admin.brand.edit', $query->brand).'">'.$query->brand->name.'</a></li>
-                            </ul>';
+                if(auth()->user()->role === 'admin') {
+                    $output .= '<ul class="list-unstyled mt-2">
+                                    <li class="text-small">SKU: '.$query->sku.' </li>
+                                    <li class="text-small">Category: <a href="'.route('admin.category.show', $query->category).'">'.$query->category->name.'</a></li>
+                                    <li class="text-small">Brand: <a href="'.route('admin.brand.edit', $query->brand).'">'.$query->brand->name.'</a></li>
+                                </ul>';
+                } else {
+                    $output .= '<ul class="list-unstyled mt-2">
+                                    <li class="text-small">SKU: '.$query->sku.' </li>
+                                    <li class="text-small">Category: '.$query->category->name.'</li>
+                                    <li class="text-small">Brand: '.$query->brand->name.'</li>
+                                </ul>';
+                }
 
                 return $output;
             })
@@ -69,10 +77,14 @@ class ProductDataTable extends DataTable
                       </label>';
             })
             ->addColumn('approved', function($query) {
-                return '<label class="custom-switch mt-2">
-                        <input type="checkbox" id="featured-'.$query->id.'" value="'.$query->approved.'" '.($query->approved === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^Product" class="custom-switch-input change-approved">
-                        <span class="custom-switch-indicator"></span>
-                      </label>';
+                if(auth()->user()->role === 'admin') {
+                    return '<label class="custom-switch mt-2">
+                                <input type="checkbox" id="featured-'.$query->id.'" value="'.$query->approved.'" '.($query->approved === 1 ? 'checked' : '').' data-id="'.$query->id.'" data-model="App^Models^Product" class="custom-switch-input change-approved">
+                                <span class="custom-switch-indicator"></span>
+                              </label>';
+                } else {
+                    return $query->approved === 1 ? '<i class="fa fa-check-circle text-success"></i>' : '<i class="fa fa-minus-circle text-danger"></i>';
+                }
             })
             ->addColumn('price', function($query) {
                 $output = '';
@@ -98,7 +110,10 @@ class ProductDataTable extends DataTable
      */
     public function query(Product $model): QueryBuilder
     {
-        $base_query = $model->newQuery()->with('brand', 'category', 'vendor');
+        $base_query = $model->newQuery()->with('brand', 'category', 'vendor')
+            ->when(auth()->user()->role !== 'admin', function($query) {
+                $query->where('vendor_id', auth()->user()->vendor->id);
+            });
 
         return $base_query;
     }

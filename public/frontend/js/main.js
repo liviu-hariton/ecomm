@@ -2,7 +2,7 @@ $(function () {
 
     "use strict";
 
-    //=========MENU FIX JS=========   
+    //=========MENU FIX JS=========
     if ($('.wsus__main_menu').offset() != undefined) {
         var navoff = $('.wsus__main_menu').offset().top;
         $(window).scroll(function () {
@@ -17,7 +17,7 @@ $(function () {
     }
 
 
-    //*==========MINI CART==========  
+    //*==========MINI CART==========
     $('.wsus__cart_icon').on('click', function () {
         $('.wsus__mini_cart').addClass('.show_cart');
     });
@@ -27,25 +27,31 @@ $(function () {
     });
 
 
-    // ======CATEGORY MENU======  
+    // ======CATEGORY MENU======
     $('.wsus_menu_category_bar').on('click', function () {
         $('.toggle_menu').toggleClass('.show_category');
     });
 
 
-    //=======POP_UP========    
+    //=======POP_UP========
     $("#cross").on("click", function () {
         $("#wsus__pop_up").fadeOut();
     });
 
 
-    //=======SELECT2====== 
+    //=======SELECT2======
     $(document).ready(function () {
-        $('.select_2').select2();
+        $('.select_2').select2({
+            templateResult: format,
+            templateSelection: format,
+            escapeMarkup: function (m) {
+                return m;
+            }
+        });
     });
 
 
-    //*======BANNER SLIDER===== 
+    //*======BANNER SLIDER=====
     $('.banner_slider').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -56,7 +62,7 @@ $(function () {
     });
 
 
-    //*==========BRAND SLIDER========= 
+    //*==========BRAND SLIDER=========
     $('.brand_slider').slick({
         slidesToShow: 6,
         slidesToScroll: 1,
@@ -100,7 +106,7 @@ $(function () {
     });
 
 
-    //*==========FLASH SELL SLIDER========= 
+    //*==========FLASH SELL SLIDER=========
     $('.flash_sell_slider').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
@@ -145,7 +151,7 @@ $(function () {
 
 
 
-    //*======HOT DETAILS SLIDER===== 
+    //*======HOT DETAILS SLIDER=====
     $('.hot_deals_slider').slick({
         slidesToShow: 2,
         slidesToScroll: 1,
@@ -191,7 +197,7 @@ $(function () {
 
 
 
-    //*======BANNER SLIDER===== 
+    //*======BANNER SLIDER=====
     $('.modal_slider').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -204,7 +210,7 @@ $(function () {
     });
 
 
-    //*==========ISOTOPE============== 
+    //*==========ISOTOPE==============
     var $grid = $('.grid').isotope({});
 
     $('.monthly_top_filter').on('click', 'button', function () {
@@ -224,7 +230,7 @@ $(function () {
     });
 
 
-    //*==========ISOTOPE============== 
+    //*==========ISOTOPE==============
     var $grid2 = $('.grid2').isotope({});
 
     $('.monthly_top_filter2').on('click', 'button', function () {
@@ -245,7 +251,7 @@ $(function () {
 
 
 
-    //*==========TEAM SLIDER========= 
+    //*==========TEAM SLIDER=========
     $('.home_blog_slider').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
@@ -296,7 +302,7 @@ $(function () {
     });
 
 
-    //*==========TEAM SLIDER========= 
+    //*==========TEAM SLIDER=========
     $('.weekly_best').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
@@ -310,7 +316,7 @@ $(function () {
     });
 
 
-    //=======COUNTDOWN======   
+    //=======COUNTDOWN======
     var d = new Date(),
         countUpDate = new Date();
     d.setDate(d.getDate() + 90);
@@ -324,7 +330,7 @@ $(function () {
     });
 
 
-    //*==========SCROLL BUTTON==========  
+    //*==========SCROLL BUTTON==========
     $('.wsus__scroll_btn').on('click', function () {
         $('html, body').animate({
             scrollTop: 0,
@@ -354,11 +360,11 @@ $(function () {
     $('.venobox').venobox();
 
 
-    //=========main.js=========   
+    //=========main.js=========
     $('.counter').countUp();
 
 
-    //*==========MOBILE MENU==========  
+    //*==========MOBILE MENU==========
     $('.wsus__mobile_menu_icon').on('click', function () {
         $('#wsus__mobile_menu').addClass('show_m_menu');
     });
@@ -368,7 +374,7 @@ $(function () {
     });
 
 
-    // ======SIDEBAR FILTER======  
+    // ======SIDEBAR FILTER======
     $('.wsus__sidebar_filter').on('click', function () {
         $('.wsus__product_sidebar').toggleClass('show_filter');
     });
@@ -378,7 +384,7 @@ $(function () {
     });
 
 
-    //*==========TEAM SLIDER========= 
+    //*==========TEAM SLIDER=========
     $('.team_slider').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -420,7 +426,7 @@ $(function () {
     });
 
 
-    //*==========STICKY SIDEBAR========= 
+    //*==========STICKY SIDEBAR=========
     $("#sticky_sidebar").stickit({
         top: 70,
     })
@@ -438,7 +444,7 @@ $(function () {
     })
 
 
-    //*==========BLOG DETAILS SLIDER========= 
+    //*==========BLOG DETAILS SLIDER=========
     $('.blog_det_slider').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -487,7 +493,7 @@ $(function () {
     });
 
 
-    //*==========PRICE SLIDER========= 
+    //*==========PRICE SLIDER=========
     jQuery(function () {
         jQuery("#slider_range").flatslider({
             min: 0, max: 10000,
@@ -499,18 +505,18 @@ $(function () {
     });
 
 
-    //*========IMG & VIDEO UPLOAD======= 
+    //*========IMG & VIDEO UPLOAD=======
     $('.gallery').miv({ image: '.cam', video: '.vid' });
 
 
-    //*========classycountdown======= 
+    //*========classycountdown=======
     $('#countdown17').ClassyCountdown({
         theme: "flat-colors-very-wide",
         end: $.now() + 10000
     });
 
 
-    //*==========DASHBOARD SIDEBAR==========  
+    //*==========DASHBOARD SIDEBAR==========
     $('.close_icon').on('click', function () {
         $('.dashboard_sidebar').toggleClass('show_dash_menu');
     });
@@ -521,7 +527,7 @@ $(function () {
 
 
 
-    //*======HOT DETAILS SLIDER===== 
+    //*======HOT DETAILS SLIDER=====
     $('.hot_deals_slider_2').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -565,7 +571,7 @@ $(function () {
     });
 
 
-    //*==========TEAM SLIDER========= 
+    //*==========TEAM SLIDER=========
     $('.weekly_best2').slick({
         slidesToShow: 3,
         slidesToScroll: 1,

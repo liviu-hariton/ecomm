@@ -24,9 +24,9 @@ class ProductVariantDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $buttons = [
-                    'variant_items' => '<a href="'.route('admin.item.index', ['vid' => $query->id]).'" class="btn btn-info btn-sm"><i class="fa fa-pencil-alt"></i> Variant items</a>',
-                    'edit' => '<a href="'.route('admin.variant.edit', $query).'" class="btn btn-warning btn-sm ml-1"><i class="fa fa-pencil-alt"></i></a>',
-                    'delete' => '<a href="'.route('admin.variant.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productvariant-table"><i class="fa fa-trash"></i></a>'
+                    'variant_items' => '<a href="'.route(userRole().'.item.index', ['vid' => $query->id]).'" class="btn btn-info btn-sm"><i class="fa fa-pencil-alt"></i> Variant items</a>',
+                    'edit' => '<a href="'.route(userRole().'.variant.edit', $query).'" class="btn btn-warning btn-sm ml-1"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route(userRole().'.variant.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productvariant-table"><i class="fa fa-trash"></i></a>'
                 ];
 
                 return implode('', $buttons);

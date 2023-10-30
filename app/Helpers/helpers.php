@@ -8,3 +8,8 @@ function menuItemActive(array $route)
         }
     }
 }
+
+function userRole()
+{
+    return auth()->user()->role;
+}

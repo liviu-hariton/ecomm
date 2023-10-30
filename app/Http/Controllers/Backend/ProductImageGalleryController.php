@@ -21,7 +21,7 @@ class ProductImageGalleryController extends Controller
      */
     public function index(ProductImageGalleryDataTable $dataTable)
     {
-        return $dataTable->render('admin.product.image-gallery.index', [
+        return $dataTable->render(userRole().'.product.image-gallery.index', [
             'product' => Product::findOrFail(\request()->pid),
             'vendor' => auth()->user()->vendor
         ]);
@@ -54,7 +54,7 @@ class ProductImageGalleryController extends Controller
 
         toastr('Image(s) uploaded successfully');
 
-        return redirect()->route('admin.image-gallery.index', [
+        return redirect()->route(userRole().'.image-gallery.index', [
             'pid' => $request->product_id
         ]);
     }
@@ -72,7 +72,7 @@ class ProductImageGalleryController extends Controller
      */
     public function edit(ProductImageGallery $imageGallery)
     {
-        return view('admin.product.image-gallery.edit', [
+        return view(userRole().'.product.image-gallery.edit', [
             'image_gallery' => $imageGallery
         ]);
     }
@@ -96,7 +96,7 @@ class ProductImageGalleryController extends Controller
 
         toastr('Slide updated successfully');
 
-        return redirect()->route('admin.image-gallery.edit', $imageGallery);
+        return redirect()->route(userRole().'.image-gallery.edit', $imageGallery);
     }
 
     /**
@@ -120,7 +120,7 @@ class ProductImageGalleryController extends Controller
         } else {
             toastr('Item deleted successfully!');
 
-            return redirect()->route('admin.image-gallery.index', ['pid' => $pid]);
+            return redirect()->route(userRole().'.image-gallery.index', ['pid' => $pid]);
         }
     }
 }
