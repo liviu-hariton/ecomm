@@ -48,7 +48,7 @@ class ProductDataTable extends DataTable
                 if(auth()->user()->role === 'admin') {
                     $output .= '<ul class="list-unstyled mt-2">
                                     <li class="text-small">SKU: '.$query->sku.' </li>
-                                    <li class="text-small">Category: <a href="'.route('admin.category.show', $query->category).'">'.$query->category->name.'</a></li>
+                                    <li class="text-small">Category: <a href="'.route('admin.category.edit', $query->category).'">'.$query->category->name.'</a></li>
                                     <li class="text-small">Brand: <a href="'.route('admin.brand.edit', $query->brand).'">'.$query->brand->name.'</a></li>
                                 </ul>';
                 } else {
