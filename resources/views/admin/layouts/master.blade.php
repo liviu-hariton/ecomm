@@ -107,11 +107,7 @@
                         },
                         success: function(data) {
                             if(data.status === 'success') {
-                                Swal.fire(
-                                    'Deleted!',
-                                    data.message,
-                                    'success'
-                                );
+                                toastr.success(data.message);
 
                                 _row.remove().draw();
                             } else {
@@ -255,6 +251,41 @@
                     "_token": "{{ csrf_token() }}",
                     "is_default" : _is_default,
                     "vid": _vid,
+                    "id": _id,
+                    "model": _model
+                },
+                success: function(data) {
+                    if(data.status === 'success') {
+                        toastr.success(data.message);
+                    } else {
+                        Swal.fire(
+                            'Hmmmm...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Ups!',
+                        error,
+                        'danger'
+                    );
+                }
+            });
+        });
+
+        $('body').on('click', '.change-home-carousel', function(e) {
+            let _home_carousel = $(this).is(':checked') === true ? '1' : '0';
+            let _id = $(this).data('id');
+            let _model = $(this).data('model');
+
+            $.ajax({
+                type: 'PUT',
+                url: '{{ route('admin.change-home-carousel') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "home_carousel" : _home_carousel,
                     "id": _id,
                     "model": _model
                 },

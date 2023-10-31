@@ -70,4 +70,17 @@ class AdminController extends Controller
             'message' => 'Item has been successfully set as default!'
         ]);
     }
+
+    public function changeHomeCarousel(Request $request) {
+        $model = str_replace("^", "\\", $request->model);
+
+        $object = $model::findOrFail($request->id);
+        $object->home_carousel = $request->home_carousel;
+        $object->save();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Item status in flash sale home carousel updated!'
+        ]);
+    }
 }
