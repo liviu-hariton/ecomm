@@ -31,6 +31,17 @@ class AdminVendorProfileRequest extends FormRequest
             'facebook' => 'url',
             'instagram' => 'url',
             'twitter' => 'url',
+            'description' => 'sometimes',
+            'shop_name' => 'required|max:200',
+            'slug' => Request::input('new-vendor-form') === "1" ? 'required|max:200|unique:vendors,slug' : 'required|max:200|unique:vendors,slug,'.(isset($this->route('vendor')->id) ? $this->route('vendor')->id : auth()->user()->vendor->id),
+            'user_id' => Request::input('new-vendor-form') === "1" ? 'required|integer' : 'sometimes|integer'
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => \Str::slug($this->slug)
+        ]);
     }
 }

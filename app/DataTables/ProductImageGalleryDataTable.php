@@ -24,8 +24,8 @@ class ProductImageGalleryDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query) {
                 $buttons = [
-                    'edit' => '<a href="'.route('admin.image-gallery.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
-                    'delete' => '<a href="'.route('admin.image-gallery.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productimagegallery-table"><i class="fa fa-trash"></i></a>'
+                    'edit' => '<a href="'.route(userRole().'.image-gallery.edit', $query).'" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></a>',
+                    'delete' => '<a href="'.route(userRole().'.image-gallery.destroy', $query).'" class="btn btn-danger btn-sm ml-1 delete-item" data-table="productimagegallery-table"><i class="fa fa-trash"></i></a>'
                 ];
 
                 return implode('', $buttons);

@@ -17,7 +17,7 @@ class AdminVendorProfileController extends Controller
      */
     public function index(Vendor $vendor)
     {
-        return view('admin.vendor.index', [
+        return view('admin.vendor-profile.index', [
             'vendor' => $vendor->load('user.user')->find(1)
         ]);
     }
@@ -69,7 +69,7 @@ class AdminVendorProfileController extends Controller
             $validated_data['banner'] = $this->uploadImage($request, 'banner', 'uploads/vendors');
         }
 
-        $vendor->load('user.user')->find(1)->update($validated_data);
+        Vendor::where('user_id', auth()->user()->id)->update($validated_data);
 
         toastr('Vendor profile updated successfully');
 

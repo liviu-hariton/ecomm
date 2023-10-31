@@ -42,7 +42,7 @@ class ProductRequest extends FormRequest
             'is_top' => 'nullable|integer',
             'is_best' => 'nullable|integer',
             'is_featured' => 'nullable|integer',
-            'approved' => 'required',
+            'approved' => 'sometimes|required',
             'status' => 'required'
         ];
     }

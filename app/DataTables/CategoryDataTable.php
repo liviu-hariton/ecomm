@@ -63,6 +63,9 @@ class CategoryDataTable extends DataTable
             ->addColumn('childs count', function($query) {
                 return $query->children->count();
             })
+            ->addColumn('products', function($query) {
+                return $query->products->count();
+            })
             ->rawColumns(['icon', 'action', 'slug', 'active', 'parent'])
             ->setRowId('id');
     }
@@ -118,6 +121,7 @@ class CategoryDataTable extends DataTable
             Column::make('name'),
             Column::make('slug'),
             Column::make('childs count')->addClass('text-center'),
+            Column::make('products')->addClass('align-middle text-center'),
             Column::make('active')->addClass('text-center'),
 
             Column::computed('action')

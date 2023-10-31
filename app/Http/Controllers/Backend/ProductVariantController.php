@@ -16,8 +16,12 @@ class ProductVariantController extends Controller
      */
     public function index(ProductVariantDataTable $dataTable)
     {
-        return $dataTable->render('admin.product.variant.index', [
-            'product' => Product::findOrFail(\request()->pid),
+        $product = Product::findOrFail(\request()->pid);
+
+        $this->authorize('view', $product);
+
+        return $dataTable->render(userRole().'.product.variant.index', [
+            'product' => $product,
         ]);
     }
 
@@ -26,8 +30,12 @@ class ProductVariantController extends Controller
      */
     public function create(Request $request)
     {
-        return view('admin.product.variant.create', [
-            'product' => Product::findOrFail(\request()->pid)
+        $product = Product::findOrFail($request->pid);
+
+        $this->authorize('view', $product);
+
+        return view(userRole().'.product.variant.create', [
+            'product' => $product
         ]);
     }
 
@@ -48,7 +56,7 @@ class ProductVariantController extends Controller
 
         toastr('Product variant created successfully');
 
-        return redirect()->route('admin.variant.index', [
+        return redirect()->route(userRole().'.variant.index', [
             'pid' => $request->product_id
         ]);
     }
@@ -66,7 +74,9 @@ class ProductVariantController extends Controller
      */
     public function edit(ProductVariant $variant)
     {
-        return view('admin.product.variant.edit', [
+        $this->authorize('view', $variant);
+
+        return view(userRole().'.product.variant.edit', [
             'variant' => $variant
         ]);
     }
@@ -85,7 +95,7 @@ class ProductVariantController extends Controller
 
         toastr('Product variant updated successfully');
 
-        return redirect()->route('admin.variant.edit', $variant);
+        return redirect()->route(userRole().'.variant.edit', $variant);
     }
 
     /**
@@ -107,7 +117,7 @@ class ProductVariantController extends Controller
         } else {
             toastr('Item deleted successfully!');
 
-            return redirect()->route('admin.variant.index', [
+            return redirect()->route(userRole().'.variant.index', [
                 'pid' => $pid
             ]);
         }

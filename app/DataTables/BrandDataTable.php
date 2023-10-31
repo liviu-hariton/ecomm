@@ -48,6 +48,9 @@ class BrandDataTable extends DataTable
                         <span class="custom-switch-indicator"></span>
                       </label>';
             })
+            ->addColumn('products', function($query) {
+                return $query->products->count();
+            })
             ->rawColumns(['logo', 'action', 'featured', 'active', 'url'])
             ->setRowId('id');
     }
@@ -92,6 +95,7 @@ class BrandDataTable extends DataTable
             Column::make('logo')->width(100),
             Column::make('name')->addClass('align-middle'),
             Column::make('url')->addClass('align-middle'),
+            Column::make('products')->addClass('align-middle text-center'),
             Column::make('featured')->addClass('text-center align-middle'),
             Column::make('active')->addClass('text-center align-middle'),
 

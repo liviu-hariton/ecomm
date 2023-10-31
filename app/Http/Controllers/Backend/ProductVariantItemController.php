@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend;
 use App\DataTables\ProductVariantItemDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductVariantItemRequest;
-use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
@@ -14,15 +13,23 @@ class ProductVariantItemController extends Controller
 {
     public function index(ProductVariantItemDataTable $itemDataTable)
     {
-        return $itemDataTable->render('admin.product.variant.item.index', [
-            'variant' => ProductVariant::with('product')->findOrFail(\request()->vid),
+        $variant = ProductVariant::with('product')->findOrFail(\request()->vid);
+
+        $this->authorize('view', $variant);
+
+        return $itemDataTable->render(userRole().'.product.variant.item.index', [
+            'variant' => $variant,
         ]);
     }
 
     public function create(Request $request)
     {
-        return view('admin.product.variant.item.create', [
-            'variant' => ProductVariant::with('product')->findOrFail($request->vid),
+        $variant = ProductVariant::with('product')->findOrFail($request->vid);
+
+        $this->authorize('view', $variant);
+
+        return view(userRole().'.product.variant.item.create', [
+            'variant' => $variant,
         ]);
     }
 
@@ -38,15 +45,22 @@ class ProductVariantItemController extends Controller
 
         toastr('Product variant item created successfully');
 
-        return redirect()->route('admin.product-variant-item.index', [
+        return redirect()->route(userRole().'.item.index', [
             'vid' => $request->product_variant_id
         ]);
     }
 
-    public function edit(Request $request)
+    public function show(Request $request)
     {
-        return view('admin.product.variant.item.edit', [
-            'variant_item' => ProductVariantItem::with('product_variant', 'product')->findOrFail($request->viid)
+        //
+    }
+
+    public function edit(ProductVariantItem $item)
+    {
+        $this->authorize('view', $item);
+
+        return view(userRole().'.product.variant.item.edit', [
+            'variant_item' => $item
         ]);
     }
 
@@ -63,18 +77,14 @@ class ProductVariantItemController extends Controller
 
         toastr('Product variant updated successfully');
 
-        return redirect()->route('admin.product-variant-item.edit', [
-            'viid' => $productVariantItem->id
-        ]);
+        return redirect()->route(userRole().'.item.edit', $productVariantItem);
     }
 
-    public function destroy(Request $request)
+    public function destroy(ProductVariantItem $item)
     {
-        $productVariantItem = ProductVariantItem::findOrFail($request->viid);
+        $vid = $item->product_variant_id;
 
-        $vid = $productVariantItem->product_variant_id;
-
-        $productVariantItem->delete();
+        $item->delete();
 
         if(\request()->ajax()) {
             return response([
@@ -84,7 +94,7 @@ class ProductVariantItemController extends Controller
         } else {
             toastr('Item deleted successfully!');
 
-            return redirect()->route('admin.product-variant-item.index', [
+            return redirect()->route(userRole().'.item.index', [
                 'vid' => $vid
             ]);
         }

@@ -30,10 +30,11 @@
                 </ul>
             </li>
 
-            <li class="dropdown {{ menuItemActive(['admin.vendor-profile.*']) }}">
+            <li class="dropdown {{ menuItemActive(['admin.vendor-profile.*', 'admin.vendor.*']) }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-store-alt"></i><span>Ecommerce</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ menuItemActive(['admin.vendor-profile.*']) }}"><a class="nav-link" href="{{ route('admin.vendor-profile.index') }}">Vendor Profile</a></li>
+                    <li class="{{ menuItemActive(['admin.vendor.*']) }}"><a class="nav-link" href="{{ route('admin.vendor.index') }}">Vendors</a></li>
+                    <li class="{{ menuItemActive(['admin.vendor-profile.*']) }}"><a class="nav-link" href="{{ route('admin.vendor-profile.index') }}">My Vendor Profile</a></li>
                 </ul>
             </li>
 

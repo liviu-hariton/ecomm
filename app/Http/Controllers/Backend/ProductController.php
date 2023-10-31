@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\ProductImageGallery;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantItem;
+use App\Models\Vendor;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -24,7 +25,9 @@ class ProductController extends Controller
      */
     public function index(ProductDataTable $dataTable)
     {
-        return $dataTable->render('admin.product.index');
+        return $dataTable->render(userRole().'.product.index', [
+            'vendor' => request()->vid !== null ? Vendor::findOrFail(\request()->vid) : null
+        ]);
     }
 
     /**
@@ -32,7 +35,7 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
-        return view('admin.product.create', [
+        return view(userRole().'.product.create', [
             'categories_tree' => (new CategoryController)->categoriesTree(
                 selected: [$request->category_id]
             ),
@@ -54,11 +57,15 @@ class ProductController extends Controller
 
         $validated_data['vendor_id'] = auth()->user()->vendor->id;
 
+        if(auth()->user()->role !== 'admin') {
+            $validated_data['approved'] = '0';
+        }
+
         Product::create($validated_data);
 
         toastr('Product created successfully');
 
-        return redirect()->route('admin.product.index');
+        return redirect()->route(userRole().'.product.index');
     }
 
     /**
@@ -74,7 +81,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('admin.product.edit', [
+        $this->authorize('view', $product);
+
+        return view(userRole().'.product.edit', [
             'product' => $product,
             'categories_tree' => (new CategoryController)->categoriesTree(
                 selected: [$product->category_id]
@@ -102,7 +111,7 @@ class ProductController extends Controller
 
         toastr('Product updated successfully');
 
-        return redirect()->route('admin.product.edit', $product);
+        return redirect()->route(userRole().'.product.edit', $product);
     }
 
     /**
@@ -139,7 +148,7 @@ class ProductController extends Controller
         } else {
             toastr('Item deleted successfully!');
 
-            return redirect()->route('admin.product.index');
+            return redirect()->route(userRole().'.product.index');
         }
     }
 }
