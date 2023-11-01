@@ -83,4 +83,17 @@ class AdminController extends Controller
             'message' => 'Item status in flash sale home carousel updated!'
         ]);
     }
+
+    public function changeAttribute(Request $request) {
+        $model = str_replace("^", "\\", $request->model);
+
+        $object = $model::findOrFail($request->id);
+        $object->{$request->attribute} = $request->enabled;
+        $object->save();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Attribute has been successfully updated!'
+        ]);
+    }
 }

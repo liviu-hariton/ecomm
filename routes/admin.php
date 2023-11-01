@@ -19,6 +19,7 @@ Route::put('change-status', [AdminController::class, 'changeStatus'])->name('cha
 Route::put('change-featured', [AdminController::class, 'changeFeatured'])->name('change-featured');
 Route::put('change-approved', [AdminController::class, 'changeApproved'])->name('change-approved');
 Route::put('change-default', [AdminController::class, 'changeDefault'])->name('change-default');
+Route::put('change-attribute', [AdminController::class, 'changeAttribute'])->name('change-attribute');
 Route::put('change-home-carousel', [AdminController::class, 'changeHomeCarousel'])->name('change-home-carousel');
 
 Route::get('profile', [ProfileController::class, 'index'])->name('profile');
