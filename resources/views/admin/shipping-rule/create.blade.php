@@ -1,0 +1,100 @@
+@extends('admin.layouts.master')
+
+@section('main-section')
+    <section class="section">
+        <div class="section-header">
+            <h1>Shipping rules</h1>
+        </div>
+
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>New rule</h4>
+
+                            <div class="card-header-action">
+                                <a href="{{ route('admin.shipping-rules.index') }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back to rules</a>
+                            </div>
+                        </div>
+
+                        <form method="post" action="{{ route('admin.shipping-rules.store') }}" enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
+
+                                    @error('name')
+                                    <span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="shipping-type">Type</label>
+                                    <select class="form-control" name="type" id="shipping-type">
+                                        <option value="flat_cost" {{ old('type') === 'flat_cost' ? 'selected="selected"' : '' }}>Flat cost</option>
+                                        <option value="min_cost" {{ old('type') === 'min_cost' ? 'selected="selected"' : '' }}>Minimum order amount</option>
+                                    </select>
+
+                                    @error('type')
+                                    <span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group {{ old('type') === 'flat_cost' || !old('type') ? 'd-none' : '' }}" id="min_cost_container">
+                                    <label for="min_cost">Minimum amount</label>
+                                    <input type="number" min="0.00" step=".01" name="min_cost" id="min_cost" class="form-control" value="{{ old('min_cost', '0.00') }}">
+
+                                    @error('min_cost')
+                                    <span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="cost">Cost</label>
+                                    <input type="number" min="0.00" step=".01" name="cost" id="cost" class="form-control" value="{{ old('cost', '0.00') }}">
+
+                                    @error('cost')
+                                    <span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select class="form-control" name="status" id="status">
+                                        <option value="1" {{ old('status') === '1' ? 'selected="selected"' : '' }}>Active</option>
+                                        <option value="0" {{ old('status') === '0' ? 'selected="selected"' : '' }}>Inactive</option>
+                                    </select>
+
+                                    @error('status')
+                                    <span class="text-danger text-small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <button class="btn btn-success mr-1" type="submit">Create rule <i class="fa fa-check-circle"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('body').on('change', '#shipping-type', function() {
+                let _shipping_type = $(this).val();
+
+                if(_shipping_type === 'flat_cost') {
+                    $("#min_cost_container").addClass('d-none');
+                } else {
+                    $("#min_cost_container").removeClass('d-none');
+                }
+            });
+        });
+    </script>
+@endpush

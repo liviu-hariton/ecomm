@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::put('change-status', [AdminController::class, 'changeStatus'])->name('change-status');
 Route::put('change-featured', [AdminController::class, 'changeFeatured'])->name('change-featured');
 Route::put('change-default', [AdminController::class, 'changeDefault'])->name('change-default');
+Route::put('change-attribute', [AdminController::class, 'changeAttribute'])->name('change-attribute');
 
 Route::get('dashboard', [VendorController::class, 'dashboard'])->name('dashboard');
 Route::get('profile', [VendorProfileController::class, 'index'])->name('profile');

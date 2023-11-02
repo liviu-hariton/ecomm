@@ -30,8 +30,7 @@
             month: {{ date('m', strtotime($flash_sale->end_date)) }},
             day: {{ date('d', strtotime($flash_sale->end_date)) }},
             hours: {{ date('H', strtotime($flash_sale->end_date)) }},
-            minutes: {{ date('i', strtotime($flash_sale->end_date)) }},
-            enableUtc: true
+            minutes: {{ date('i', strtotime($flash_sale->end_date)) }}
         });
     });
 </script>

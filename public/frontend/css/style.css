@@ -3714,12 +3714,12 @@ PRODUCT DETAILS START
 }
 
 .wsus__selectbox .select2-container--default .select2-selection--single {
-  padding: 17px 20px;
+  padding: 5px 0 30px 15px;
   border-radius: 30px;
 }
 
 .wsus__selectbox .select2-container--default .select2-selection--single .select2-selection__arrow {
-  top: -7px;
+  top: -12px;
 }
 
 .wsus__button_area li .add_cart {
@@ -9474,4 +9474,8 @@ a:not([href]):not([class]):hover {
 
 .form-group {
     margin-bottom: 15px;
+}
+
+.z999 {
+    z-index: 999 !important;
 }

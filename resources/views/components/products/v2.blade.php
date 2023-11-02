@@ -17,7 +17,7 @@
             <span class="wsus__minus">-{{ computeProductDiscount($data->product) }}%</span>
             @endif
 
-            <a class="wsus__pro_link" href="product_details.html">
+            <a class="wsus__pro_link" href="{{ route('product', $data->product->slug) }}">
                 <img src="{{ asset($data->product->image) }}" alt="{{ $data->product->name }}" class="img-fluid w-100 img_1" />
                 @if(count($data->product->images) > 0)
                 <img src="{{ asset($data->product->images[0]->image) }}" alt="{{ $data->product->images[0]->alt }}" class="img-fluid w-100 img_2" />
@@ -36,13 +36,13 @@
                     <span>(120 review)</span>
                 </p>
 
-                <a class="wsus__pro_name" href="#">{{ $data->product->name }}</a>
+                <a class="wsus__pro_name" href="{{ route('product', $data->product->slug) }}">{{ $data->product->name }}</a>
 
                 <p class="wsus__price">
-                    ${{ productPrice($data->product) }}
+                    {{ productPrice($data->product) }} <i class="{{ $general_settings->currency_icon }}"></i>
 
                     @if(productHasDiscount($data->product) === true)
-                        <del>${{ $data->product->price }}</del>
+                        <del>{{ $data->product->price }} <i class="{{ $general_settings->currency_icon }}"></i></del>
                     @endif
                 </p>
 
