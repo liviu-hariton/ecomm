@@ -43,10 +43,10 @@
             <a class="wsus__pro_name" href="{{ route('product', $data->product->slug) }}">{{ $data->product->name }}</a>
 
             <p class="wsus__price">
-                ${{ productPrice($data->product) }}
+                {{ productPrice($data->product) }} <i class="{{ $general_settings->currency_icon }}"></i>
 
                 @if(productHasDiscount($data->product) === true)
-                <del>${{ $data->product->price }}</del>
+                <del>{{ $data->product->price }} <i class="{{ $general_settings->currency_icon }}"></i></del>
                 @endif
             </p>
 

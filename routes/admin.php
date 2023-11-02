@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\ProductImageGalleryController;
 use App\Http\Controllers\Backend\ProductVariantController;
 use App\Http\Controllers\Backend\ProductVariantItemController;
 use App\Http\Controllers\Backend\ProfileController;
+use App\Http\Controllers\Backend\SettingsController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\VendorController;
 use Illuminate\Support\Facades\Route;
@@ -46,3 +47,6 @@ Route::get('flash-sale', [FlashSaleController::class, 'index'])->name('flash-sal
 Route::put('flash-sale', [FlashSaleController::class, 'update'])->name('flash-sale.update');
 Route::post('flash-sale/add-products', [FlashSaleController::class, 'addProducts'])->name('flash-sale.add-products');
 Route::delete('flash-sale/remove-product', [FlashSaleController::class, 'removeProduct'])->name('flash-sale.remove-product');
+
+Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+Route::put('general-settings-update', [SettingsController::class, 'updateGeneral'])->name('general-settings-update');

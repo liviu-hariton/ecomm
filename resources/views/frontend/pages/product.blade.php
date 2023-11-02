@@ -3,8 +3,7 @@
 @section('main-content')
     <section id="wsus__product_details">
         <div class="container">
-
-            @if(auth()->user()->role === 'admin' || auth()->user()->vendor->id === $product->vendor_id)
+            @if(auth()->user() && (auth()->user()->role === 'admin' || auth()->user()->vendor->id === $product->vendor_id))
             <div class="card mb-2">
                 <div class="card-header">
                     <i class="fa fa-user-cog"></i> Product Options
@@ -92,10 +91,10 @@
                             </p>
 
                             <h4>
-                                ${{ productPrice($product) }}
+                                {{ productPrice($product) }} <i class="{{ $general_settings->currency_icon }}"></i>
 
                                 @if(productHasDiscount($product) === true)
-                                    <del>${{ $product->price }}</del>
+                                    <del>{{ $product->price }} <i class="{{ $general_settings->currency_icon }}"></i></del>
                                 @endif
                             </h4>
 
@@ -129,7 +128,7 @@
                                     <select class="select_2" name="variant-{{ $variant->id }}">
                                         @foreach($variant->items as $item)
                                         @if($item->status === 1)
-                                        <option value="{{ $item->id }}" {{ $item->is_default === 1 ? 'selected="selected"' : '' }}>{{ $item->name }} @if($item->price > 0) (+ ${{ $item->price }}) @endif</option>
+                                        <option value="{{ $item->id }}" {{ $item->is_default === 1 ? 'selected="selected"' : '' }}>{{ $item->name }} @if($item->price > 0) (+ {{ $item->price }} {{ $general_settings->currency_name }}) @endif</option>
                                         @endif
                                         @endforeach
                                     </select>
@@ -658,8 +657,7 @@
                 month: {{ date('m', strtotime($product->offer_end_date)) }},
                 day: {{ date('d', strtotime($product->offer_end_date)) }},
                 hours: {{ date('H', strtotime($product->offer_end_date)) }},
-                minutes: {{ date('i', strtotime($product->offer_end_date)) }},
-                enableUtc: true
+                minutes: {{ date('i', strtotime($product->offer_end_date)) }}
             });
         });
 
@@ -670,7 +668,7 @@
 
             $.ajax({
                 type: 'PUT',
-                url: '{{ route('admin.change-status') }}',
+                url: '{{ route(userRole().'.change-status') }}',
                 data: {
                     "_token": "{{ csrf_token() }}",
                     "status" : _status,
@@ -725,7 +723,7 @@
 
             $.ajax({
                 type: 'PUT',
-                url: '{{ route('admin.change-attribute') }}',
+                url: '{{ route(userRole().'.change-attribute') }}',
                 data: {
                     "_token": "{{ csrf_token() }}",
                     "enabled" : _enabled,

@@ -45,6 +45,8 @@
                     <li class="{{ menuItemActive(['admin.category.index']) }}"><a class="nav-link" href="{{ route('admin.slider.index') }}">Home Slider</a></li>
                 </ul>
             </li>
+
+            <li class="{{ menuItemActive(['admin.settings.*']) }}"><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa fa-cogs"></i> <span>Settings</span></a></li>
         </ul>
     </aside>
 </div>
