@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\ProductVariantController;
 use App\Http\Controllers\Backend\ProductVariantItemController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SettingsController;
+use App\Http\Controllers\Backend\ShippingRulesController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\VendorController;
 use Illuminate\Support\Facades\Route;
@@ -53,3 +54,4 @@ Route::get('settings', [SettingsController::class, 'index'])->name('settings.ind
 Route::put('general-settings-update', [SettingsController::class, 'updateGeneral'])->name('general-settings-update');
 
 Route::resource('coupons', CouponController::class);
+Route::resource('shipping-rules', ShippingRulesController::class);

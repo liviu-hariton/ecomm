@@ -30,13 +30,14 @@
                 </ul>
             </li>
 
-            <li class="dropdown {{ menuItemActive(['admin.vendor-profile.*', 'admin.vendor.*', 'admin.flash-sale.*', 'admin.coupons.*']) }}">
+            <li class="dropdown {{ menuItemActive(['admin.vendor-profile.*', 'admin.vendor.*', 'admin.flash-sale.*', 'admin.coupons.*', 'admin.shipping-rules.*']) }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-store-alt"></i><span>Ecommerce</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ menuItemActive(['admin.vendor.*']) }}"><a class="nav-link" href="{{ route('admin.vendor.index') }}">Vendors</a></li>
                     <li class="{{ menuItemActive(['admin.vendor-profile.*']) }}"><a class="nav-link" href="{{ route('admin.vendor-profile.index') }}">My Vendor Profile</a></li>
                     <li class="{{ menuItemActive(['admin.flash-sale.*']) }}"><a class="nav-link" href="{{ route('admin.flash-sale.index') }}">Flash sale</a></li>
                     <li class="{{ menuItemActive(['admin.coupons.*']) }}"><a class="nav-link" href="{{ route('admin.coupons.index') }}">Coupons</a></li>
+                    <li class="{{ menuItemActive(['admin.shipping-rules.*']) }}"><a class="nav-link" href="{{ route('admin.shipping-rules.index') }}">Shipping rules</a></li>
                 </ul>
             </li>
 
