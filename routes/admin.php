@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\AdminVendorProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\FlashSaleController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProductImageGalleryController;
@@ -50,3 +51,5 @@ Route::delete('flash-sale/remove-product', [FlashSaleController::class, 'removeP
 
 Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 Route::put('general-settings-update', [SettingsController::class, 'updateGeneral'])->name('general-settings-update');
+
+Route::resource('coupons', CouponController::class);
