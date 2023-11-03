@@ -3,7 +3,7 @@
 @section('main-content')
     <section id="wsus__product_details">
         <div class="container">
-            @if(auth()->user() && (auth()->user()->role === 'admin' || auth()->user()->vendor->id === $product->vendor_id))
+            @if(auth()->user() && (auth()->user()->role === 'admin' || (auth()->user()->vendor && auth()->user()->vendor->id === $product->vendor_id)))
             <div class="card mb-2">
                 <div class="card-header">
                     <i class="fa fa-user-cog"></i> Product Options
@@ -661,7 +661,7 @@
             });
         });
 
-        @if(auth()->user())
+        @if(auth()->user() && (auth()->user()->role === 'admin' || (auth()->user()->vendor && auth()->user()->vendor->id === $product->vendor_id)))
         $('body').on('click', '.change-status', function(e) {
             let _status = $(this).is(':checked') === true ? '1' : '0';
             let _id = $(this).data('id');

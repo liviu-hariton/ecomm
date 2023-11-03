@@ -8,6 +8,7 @@ use App\Http\Requests\AdminVendorProfileRequest;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Traits\ImageUploadTrait;
+use F9Web\Meta\Meta;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,8 @@ class VendorController extends Controller
 
     public function dashboard()
     {
+        Meta::set('title', 'Seller dashboard');
+
         return view('vendor.dashboard.dashboard');
     }
 
@@ -33,6 +36,8 @@ class VendorController extends Controller
      */
     public function create()
     {
+        Meta::set('title', 'Create seller profile');
+
         return view('admin.vendor.create', [
             'users' => User::whereDoesntHave('vendor')->where('role', 'not like', 'user')->get()
         ]);
@@ -69,6 +74,8 @@ class VendorController extends Controller
      */
     public function edit(Vendor $vendor)
     {
+        Meta::set('title', 'Update seller profile');
+
         return view('admin.vendor.edit', [
             'vendor' => $vendor
         ]);

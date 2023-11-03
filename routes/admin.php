@@ -52,6 +52,7 @@ Route::delete('flash-sale/remove-product', [FlashSaleController::class, 'removeP
 
 Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 Route::put('general-settings-update', [SettingsController::class, 'updateGeneral'])->name('general-settings-update');
+Route::put('seo-settings-update', [SettingsController::class, 'updateSeo'])->name('seo-settings-update');
 
 Route::resource('coupons', CouponController::class);
 Route::resource('shipping-rules', ShippingRulesController::class);

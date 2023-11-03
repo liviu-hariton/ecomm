@@ -15,6 +15,8 @@ class Settings extends Model
         'contact_email',
         'currency_name',
         'currency_icon',
-        'timezone'
+        'timezone',
+        'meta_title',
+        'meta_description'
     ];
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserAddressRequest;
 use App\Models\UserAddress;
+use F9Web\Meta\Meta;
 use Illuminate\Http\Request;
 
 class UserAddressController extends Controller
@@ -14,6 +15,8 @@ class UserAddressController extends Controller
      */
     public function index()
     {
+        Meta::set('title', 'Customer addresses');
+
         return view('frontend.dashboard.address.index', [
             'addresses' => UserAddress::where('user_id', auth()->user()->id)->get()
         ]);
@@ -24,6 +27,8 @@ class UserAddressController extends Controller
      */
     public function create()
     {
+        Meta::set('title', 'New address');
+
         return view('frontend.dashboard.address.create');
     }
 
@@ -55,6 +60,8 @@ class UserAddressController extends Controller
      */
     public function edit(UserAddress $address)
     {
+        Meta::set('title', 'Edit address');
+
         return view('frontend.dashboard.address.edit', [
             'address' => $address
         ]);
