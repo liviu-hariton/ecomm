@@ -661,6 +661,7 @@
             });
         });
 
+        @if(auth()->user())
         $('body').on('click', '.change-status', function(e) {
             let _status = $(this).is(':checked') === true ? '1' : '0';
             let _id = $(this).data('id');
@@ -743,5 +744,6 @@
                 }
             });
         });
+        @endif
     </script>
 @endpush

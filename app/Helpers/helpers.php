@@ -11,7 +11,7 @@ function menuItemActive(array $route)
 
 function userRole()
 {
-    return auth()->user()->role;
+    return auth()->user() ? auth()->user()->role : null;
 }
 
 function productHasDiscount($data): bool
