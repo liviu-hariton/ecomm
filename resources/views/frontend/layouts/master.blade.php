@@ -62,5 +62,29 @@
 <script src="{{ asset('frontend/js/main.js') }}"></script>
 </body>
 
+<script>
+    $(document).ready(function() {
+        $('.shopping-cart-form').on('submit', function(e) {
+            e.preventDefault();
+
+            let _form_data = $(this).serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('add-to-cart') }}',
+                data: _form_data,
+
+
+                success: function(data) {
+
+                },
+                error: function(xhr, status, error) {
+
+                }
+            });
+        });
+    });
+</script>
+
 @stack('scripts')
 </html>

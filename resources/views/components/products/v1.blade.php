@@ -25,7 +25,7 @@
             @endif
         </a>
         <ul class="wsus__single_pro_icon">
-            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-eye"></i></a></li>
+            <li><a href="#" data-bs-toggle="modal" data-bs-target="#product-quick-view-{{ $data->product->id }}"><i class="far fa-eye"></i></a></li>
             <li><a href="#"><i class="far fa-heart"></i></a></li>
             <li><a href="#"><i class="far fa-random"></i></a>
         </ul>

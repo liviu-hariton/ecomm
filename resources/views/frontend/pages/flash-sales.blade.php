@@ -30,6 +30,10 @@
         </div>
     </div>
 </section>
+
+@foreach($flash_sale_items->items() as $carousel_item)
+    <x-products.modal :data="$carousel_item"></x-products.modal>
+@endforeach
 @endsection
 
 @push('scripts')

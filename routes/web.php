@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\FlashSaleController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
@@ -26,6 +27,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/flash-sale', [FlashSaleController::class, 'index'])->name('flash-sale');
 
 Route::get('/p/{product:slug}', [ProductController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('product');
+
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

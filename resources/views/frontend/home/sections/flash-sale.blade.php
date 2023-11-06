@@ -22,6 +22,10 @@
     </div>
 </section>
 
+@foreach($flash_sale->carouselItems as $carousel_item)
+    <x-products.modal :data="$carousel_item"></x-products.modal>
+@endforeach
+
 @push('scripts')
 <script>
     $(document).ready(function() {
