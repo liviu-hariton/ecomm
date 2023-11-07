@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
 
-            $table->string('site_name');
-            $table->string('layout');
-            $table->string('contact_email');
-            $table->string('currency_name');
-            $table->string('currency_icon');
-            $table->string('timezone');
+            $table->string('site_name')->nullable();
+            $table->string('layout')->nullable();
+            $table->string('contact_email')->nullable();
+            $table->string('currency_name')->nullable();
+            $table->string('currency_icon')->nullable();
+            $table->string('timezone')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
 
             $table->timestamps();
         });

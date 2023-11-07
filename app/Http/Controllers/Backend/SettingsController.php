@@ -34,7 +34,24 @@ class SettingsController extends Controller
             $validated_data
         );
 
-        toastr('Settings updated successfully');
+        toastr('General settings updated successfully');
+
+        return redirect()->route('admin.settings.index');
+    }
+
+    public function updateSeo(Request $request)
+    {
+        $validated_data = $request->validate([
+            'meta_title' => 'required|max:200',
+            'meta_description' => 'required|max:200'
+        ]);
+
+        Settings::updateOrCreate(
+            ['id' => 1],
+            $validated_data
+        );
+
+        toastr('SEO settings updated successfully');
 
         return redirect()->route('admin.settings.index');
     }

@@ -34,7 +34,7 @@
                 </a>
             </div>
             <div class="col-xl-2 col-6 col-md-4">
-                <a class="wsus__dashboard_item purple" href="dsahboard_address.html">
+                <a class="wsus__dashboard_item purple" href="{{ route('user.addresses.index') }}">
                     <i class="fal fa-map-marker-alt"></i>
                     <p>address</p>
                 </a>

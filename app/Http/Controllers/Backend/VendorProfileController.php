@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use F9Web\Meta\Meta;
 use Illuminate\Http\Request;
 
 class VendorProfileController extends Controller
 {
     public function index()
     {
+        Meta::set('title', 'Seller profile');
+
         return view('vendor.dashboard.profile');
     }
 

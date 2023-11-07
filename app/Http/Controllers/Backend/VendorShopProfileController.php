@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminVendorProfileRequest;
 use App\Models\Vendor;
 use App\Traits\ImageUploadTrait;
+use F9Web\Meta\Meta;
 use Illuminate\Http\Request;
 
 class VendorShopProfileController extends Controller
@@ -17,6 +18,8 @@ class VendorShopProfileController extends Controller
      */
     public function index()
     {
+        Meta::set('title', 'My shop profile');
+
         return view('vendor.shop-profile.index', [
             'vendor' => Vendor::where('user_id', auth()->user()->id)->first()
         ]);

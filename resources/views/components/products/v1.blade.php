@@ -25,7 +25,7 @@
             @endif
         </a>
         <ul class="wsus__single_pro_icon">
-            <li><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-eye"></i></a></li>
+            <li><a href="#" data-bs-toggle="modal" data-bs-target="#product-quick-view-{{ $data->product->id }}"><i class="far fa-eye"></i></a></li>
             <li><a href="#"><i class="far fa-heart"></i></a></li>
             <li><a href="#"><i class="far fa-random"></i></a>
         </ul>
@@ -50,7 +50,31 @@
                 @endif
             </p>
 
-            <a class="add_cart" href="#">add to cart</a>
+            @if($data->product->qty > 0)
+                <form method="post" action="" class="shopping-cart-form">
+                    @csrf
+
+                    <input type="hidden" name="product_id" value="{{ $data->product->id }}" />
+                    <input type="hidden" name="qty" value="1" />
+
+                    @if(count($data->product->variants) > 0)
+                        @foreach($data->product->variants as $variant)
+                            @if($variant->status === 1)
+                                @php $variant->load('items') @endphp
+                                <select class="d-none" name="variant[{{ $variant->id }}]">
+                                    @foreach($variant->items as $item)
+                                        @if($item->status === 1)
+                                            <option value="{{ $item->id }}" {{ $item->is_default === 1 ? 'selected="selected"' : '' }}>{{ $item->name }} @if($item->price > 0) (+ {{ $item->price }} {{ $general_settings->currency_name }}) @endif</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @endif
+                        @endforeach
+                    @endif
+
+                    <button type="submit" class="add_cart">add to cart</button>
+                </form>
+            @endif
         </div>
     </div>
 </div>

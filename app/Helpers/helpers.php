@@ -11,7 +11,7 @@ function menuItemActive(array $route)
 
 function userRole()
 {
-    return auth()->user()->role;
+    return auth()->user() ? auth()->user()->role : null;
 }
 
 function productHasDiscount($data): bool
@@ -31,4 +31,30 @@ function computeProductDiscount($data): float
 function productPrice($data)
 {
     return productHasDiscount($data) ? $data->offer_price : $data->price;
+}
+
+function cartSubtotal()
+{
+    $total = 0;
+
+    $cart_items = Cart::content();
+
+    foreach($cart_items as $cart_item) {
+        $total += ($cart_item->price + $cart_item->options->variants_amount) * $cart_item->qty;
+    }
+
+    return $total;
+}
+
+function cartTotal()
+{
+    $total = 0;
+
+    $cart_items = Cart::content();
+
+    foreach($cart_items as $cart_item) {
+        $total += ($cart_item->price + $cart_item->options->variants_amount) * $cart_item->qty;
+    }
+
+    return $total;
 }

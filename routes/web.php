@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\FlashSaleController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Frontend\UserAddressController;
 use App\Http\Controllers\Frontend\UserDashboardController;
 use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\ProfileController;
@@ -26,6 +28,14 @@ Route::get('/flash-sale', [FlashSaleController::class, 'index'])->name('flash-sa
 
 Route::get('/p/{product:slug}', [ProductController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('product');
 
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::post('/update-qty', [CartController::class, 'updateProductQty'])->name('update-qty');
+Route::delete('/remove-from-cart', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
+Route::delete('/clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
+Route::get('/cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
+
+Route::get('/cart', [CartController::class, 'cartDetails'])->name('cart');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -41,4 +51,6 @@ Route::prefix('user')->as('user.')->middleware(['auth', 'verified'])->group(func
     Route::get('profile', [UserProfileController::class, 'index'])->name('profile');
     Route::put('profile', [UserProfileController::class, 'updateProfile'])->name('profile.update');
     Route::post('profile', [UserProfileController::class, 'updatePassword'])->name('profile.update.password');
+
+    Route::resource('addresses', UserAddressController::class);
 });

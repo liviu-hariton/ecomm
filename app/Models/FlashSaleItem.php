@@ -22,7 +22,7 @@ class FlashSaleItem extends Model
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class)->with('images','category','brand');
+        return $this->belongsTo(Product::class)->with('images','category','brand','variants');
     }
 
     public function scopeActive(Builder $query)
