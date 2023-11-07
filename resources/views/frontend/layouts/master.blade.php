@@ -59,6 +59,8 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="{{ asset('frontend/js/main.js') }}"></script>
 </body>
 
@@ -73,15 +75,83 @@
                 type: 'POST',
                 url: '{{ route('add-to-cart') }}',
                 data: _form_data,
-
-
                 success: function(data) {
+                    if(data.status === 'success') {
+                        toastr.success(data.message);
 
+                        $("#cart-subtotal").html(data.cart_subtotal);
+                        $("#cart-sidebar-subtotal").html(data.cart_subtotal);
+                        $("#cart-total").html(data.cart_total);
+                        $("#cart-count").html(data.cart_count);
+                        $("#sidebar-cart-products").html(data.cart_sidebar_products);
+                    } else {
+                        Swal.fire(
+                            'Hmmmm...',
+                            data.message,
+                            'warning'
+                        );
+                    }
                 },
                 error: function(xhr, status, error) {
 
                 }
             });
+        });
+
+        $('.remove-from-cart').on('click', function(e) {
+            e.preventDefault();
+
+            let _url = $(this).attr('href');
+            let _cart_id = $(this).data('cart-id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#FB160A',
+                cancelButtonColor: '#4CEA67',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: _url,
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "cart_id": _cart_id
+                        },
+                        success: function(data) {
+                            if(data.status === 'success') {
+                                toastr.success(data.message);
+
+                                $("#cart-row-" + _cart_id).remove();
+                                $("#top-cart-row-" + _cart_id).remove();
+
+                                $("#cart-subtotal").html(data.cart_subtotal);
+                                $("#cart-sidebar-subtotal").html(data.cart_subtotal);
+                                $("#cart-total").html(data.cart_total);
+                                $("#cart-count").html(data.cart_count);
+
+                                getSidebarCartProducts();
+                            } else {
+                                Swal.fire(
+                                    'Hmmmm...',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire(
+                                'Ups!',
+                                error,
+                                'danger'
+                            );
+                        }
+                    });
+                }
+            })
         });
     });
 </script>

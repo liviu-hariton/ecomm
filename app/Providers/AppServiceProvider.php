@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Frontend\CartController;
 use App\Models\Settings;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
@@ -29,8 +30,6 @@ class AppServiceProvider extends ServiceProvider
 
         Config::set('app.timezone', $general_settings->timezone);
 
-        View::composer('*', function($view) use ($general_settings) {
-            $view->with('general_settings', $general_settings);
-        });
+        View::share('general_settings', $general_settings);
     }
 }

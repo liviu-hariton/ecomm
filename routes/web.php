@@ -29,6 +29,12 @@ Route::get('/flash-sale', [FlashSaleController::class, 'index'])->name('flash-sa
 Route::get('/p/{product:slug}', [ProductController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('product');
 
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::post('/update-qty', [CartController::class, 'updateProductQty'])->name('update-qty');
+Route::delete('/remove-from-cart', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
+Route::delete('/clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
+Route::get('/cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
+
+Route::get('/cart', [CartController::class, 'cartDetails'])->name('cart');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
