@@ -57,7 +57,7 @@
         <h5>sub total <span id="cart-sidebar-subtotal">{{ cartSubtotal() }}</span> <i class="{{ $general_settings->currency_icon }}"></i></h5>
         <div class="wsus__minicart_btn_area">
             <a class="common_btn" href="{{ route('cart') }}">view cart</a>
-            <a class="common_btn" href="check_out.html">checkout</a>
+            <a class="common_btn" href="{{ route('user.checkout') }}">checkout</a>
         </div>
         @endif
     </div>

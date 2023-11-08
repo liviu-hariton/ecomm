@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\ProductVariantItem;
 use Illuminate\Contracts\View\View;
@@ -74,7 +75,8 @@ class CartController extends Controller
             'cart_subtotal' => $this->cartSubTotal(),
             'cart_total' => $this->cartTotal(),
             'cart_count' => Cart::content()->count(),
-            'cart_sidebar_products' => $this->cartSidebarProducts()
+            'cart_sidebar_products' => $this->cartSidebarProducts(),
+            'cart_discount' => $this->cartDiscount()
         ];
     }
 
@@ -141,6 +143,12 @@ class CartController extends Controller
     {
         $total = $this->cartSubTotal();
 
+        $cart_discount = $this->cartDiscount();
+
+        if($cart_discount > 0) {
+            $total -= $cart_discount;
+        }
+
         return $total;
     }
 
@@ -151,13 +159,48 @@ class CartController extends Controller
         return ($cart_item->price + $cart_item->options->variants_amount) * $cart_item->qty;
     }
 
+    public function cartDiscount()
+    {
+        $discount = 0;
+
+        $cart_subtotal = $this->cartSubTotal();
+
+        if(session()->has('coupon')) {
+            if(session()->get('coupon')->discount_type === 'fixed') {
+                $discount += session()->get('coupon')->discount_amount;
+            } else {
+                $discount += $cart_subtotal * session()->get('coupon')->discount_amount / 100;
+
+            }
+        }
+
+        if($discount > $cart_subtotal) {
+            $discount = $cart_subtotal;
+        }
+
+        return $discount;
+    }
+
     public function clearCart()
     {
         Cart::destroy();
 
+        session()->forget('coupon');
+
         return response([
             'status' => 'success',
             'message' => 'Cart cleared successfully!'
+        ]);
+    }
+
+    public function clearCoupon()
+    {
+        session()->forget('coupon');
+
+        return response([
+            'status' => 'success',
+            'message' => 'Coupon cleared successfully!',
+            ...$this->cartSummaryResponse()
         ]);
     }
 
@@ -178,5 +221,46 @@ class CartController extends Controller
         }
 
         return $output;
+    }
+
+    public function applyCoupon(Request $request)
+    {
+        if(!$request->coupon_code) {
+            return response([
+                'status' => 'error',
+                'message' => 'Please provide a coupon code'
+            ]);
+        }
+
+        $coupon = Coupon::where('code', $request->coupon_code)->first();
+
+        if(!$coupon) {
+            return response([
+                'status' => 'error',
+                'message' => 'The coupon is not active or does not exists!'
+            ]);
+        }
+
+        if($coupon->start_date > date('Y-m-d H:i:s') || $coupon->end_date < date('Y-m-d H:i:s')) {
+            return response([
+                'status' => 'warning',
+                'message' => 'The coupon is not active yet or has expired!'
+            ]);
+        }
+
+        if($coupon->usages > $coupon->qty) {
+            return response([
+                'status' => 'warning',
+                'message' => 'The coupon cannot be used anymore!'
+            ]);
+        }
+
+        session(['coupon' => $coupon]);
+
+        return response([
+            'status' => 'success',
+            'message' => 'Coupon applied successfully!',
+            ...$this->cartSummaryResponse()
+        ]);
     }
 }

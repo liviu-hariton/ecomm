@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\CheckoutController;
+use App\Http\Controllers\Backend\PaymentController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\FlashSaleController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -32,9 +34,11 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-
 Route::post('/update-qty', [CartController::class, 'updateProductQty'])->name('update-qty');
 Route::delete('/remove-from-cart', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::delete('/clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
+Route::delete('/clear-coupon', [CartController::class, 'clearCoupon'])->name('clear-coupon');
 Route::get('/cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
 
 Route::get('/cart', [CartController::class, 'cartDetails'])->name('cart');
+Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -53,4 +57,8 @@ Route::prefix('user')->as('user.')->middleware(['auth', 'verified'])->group(func
     Route::post('profile', [UserProfileController::class, 'updatePassword'])->name('profile.update.password');
 
     Route::resource('addresses', UserAddressController::class);
+
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('checkout/submit', [CheckoutController::class, 'checkoutSubmit'])->name('checkout.submit');
+    Route::get('payment', [PaymentController::class, 'index'])->name('payment');
 });

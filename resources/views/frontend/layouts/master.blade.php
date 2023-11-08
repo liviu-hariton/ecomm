@@ -84,6 +84,7 @@
                         $("#cart-total").html(data.cart_total);
                         $("#cart-count").html(data.cart_count);
                         $("#sidebar-cart-products").html(data.cart_sidebar_products);
+                        $("#cart-discount").html(data.cart_discount);
                     } else {
                         Swal.fire(
                             'Hmmmm...',
