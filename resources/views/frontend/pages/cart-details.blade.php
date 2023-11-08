@@ -55,7 +55,7 @@
                                             <td class="wsus__pro_select">
                                                 <div class="input-group">
                                                     <button class="btn btn-outline-danger product-decrement" type="button"><i class="fa fa-minus"></i></button>
-                                                    <input class="form-control text-center product-qty" data-cart-id="{{ $item->rowId }}" type="text" min="1" max="100" value="{{ $item->qty }}" />
+                                                    <input class="form-control text-center product-qty" data-cart-id="{{ $item->rowId }}" type="text" min="1" max="100" value="{{ $item->qty }}" readonly />
                                                     <button class="btn btn-outline-success product-increment" type="button"><i class="fa fa-plus"></i></button>
                                                 </div>
                                             </td>
@@ -74,20 +74,27 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-xl-3">
                         <div class="wsus__cart_list_footer_button" id="sticky_sidebar">
                             <h6>total cart</h6>
                             <p>subtotal: <span id="cart-subtotal">{{ cartSubtotal() }}</span> <i class="{{ $general_settings->currency_icon }}"></i></p>
-                            <p>delivery: <span>00.00</span> <i class="{{ $general_settings->currency_icon }}"></i></p>
-                            <p>discount: <span>10.00</span> <i class="{{ $general_settings->currency_icon }}"></i></p>
+                            <p>discount: <span id="cart-discount">{{ cartDiscount() }}</span> <i class="{{ $general_settings->currency_icon }}"></i></p>
                             <p class="total"><span>total:</span> <span id="cart-total">{{ cartTotal() }}</span> <i class="{{ $general_settings->currency_icon }}"></i></p>
 
-                            <form>
-                                <input type="text" placeholder="Coupon Code">
+                            <form id="coupon-form">
+                                @csrf
+
+                                <input type="text" name="coupon_code" placeholder="Coupon Code" value="{{ session()->has('coupon') ? session()->get('coupon')->code : '' }}">
                                 <button type="submit" class="common_btn">apply</button>
                             </form>
-                            <a class="common_btn mt-4 w-100 text-center" href="check_out.html">checkout</a>
-                            <a class="common_btn mt-1 w-100 text-center" href="product_grid_view.html"><i class="fab fa-shopify"></i> go shop</a>
+
+                            @if(session()->has('coupon'))
+                                <a href="#" class="text-danger clear-coupon"><i class="fa fa-times-circle"></i> clear coupon</a>
+                            @endif
+
+                            <a class="common_btn mt-4 w-100 text-center" href="{{ route('user.checkout') }}">checkout</a>
+                            <a class="common_btn mt-1 w-100 text-center" href="{{ route('home') }}"><i class="fab fa-shopify"></i> go shop</a>
                         </div>
                     </div>
                 @else
@@ -156,6 +163,7 @@
                             $("#cart-total").html(data.cart_total);
                             $("#cart-count").html(data.cart_count);
                             $("#sidebar-cart-products").html(data.cart_sidebar_products);
+                            $("#cart-discount").html(data.cart_discount);
                         } else {
                             Swal.fire(
                                 'Hmmmm...',
@@ -193,6 +201,7 @@
                             $("#cart-total").html(data.cart_total);
                             $("#cart-count").html(data.cart_count);
                             $("#sidebar-cart-products").html(data.cart_sidebar_products);
+                            $("#cart-discount").html(data.cart_discount);
                         },
                         error: function(xhr, status, error) {
 
@@ -225,6 +234,88 @@
                             success: function(data) {
                                 if(data.status === 'success') {
                                     window.location.reload();
+                                } else {
+                                    Swal.fire(
+                                        'Hmmmm...',
+                                        data.message,
+                                        'warning'
+                                    );
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire(
+                                    'Ups!',
+                                    error,
+                                    'danger'
+                                );
+                            }
+                        });
+                    }
+                })
+            });
+
+            $('#coupon-form').on('submit', function(e) {
+                e.preventDefault();
+
+                let _form_data = $(this).serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('apply-coupon') }}',
+                    data: _form_data,
+                    success: function(data) {
+                        if(data.status === 'success') {
+                            $("#cart-subtotal").html(data.cart_subtotal);
+                            $("#cart-sidebar-subtotal").html(data.cart_subtotal);
+                            $("#cart-total").html(data.cart_total);
+                            $("#cart-count").html(data.cart_count);
+                            $("#sidebar-cart-products").html(data.cart_sidebar_products);
+                            $("#cart-discount").html(data.cart_discount);
+
+                            toastr.success(data.message);
+                        } else {
+                            Swal.fire(
+                                'Hmmmm...',
+                                data.message,
+                                data.status
+                            );
+                        }
+                    },
+                    error: function(xhr, status, error) {
+
+                    }
+                });
+            });
+
+            $('.clear-coupon').on('click', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FB160A',
+                    cancelButtonColor: '#4CEA67',
+                    confirmButtonText: 'Yes, clear it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: '{{ route('clear-coupon') }}',
+                            data: {
+                                "_token": "{{ csrf_token() }}"
+                            },
+                            success: function(data) {
+                                if(data.status === 'success') {
+                                    $("#cart-subtotal").html(data.cart_subtotal);
+                                    $("#cart-sidebar-subtotal").html(data.cart_subtotal);
+                                    $("#cart-total").html(data.cart_total);
+                                    $("#cart-count").html(data.cart_count);
+                                    $("#sidebar-cart-products").html(data.cart_sidebar_products);
+                                    $("#cart-discount").html(data.cart_discount);
+
+                                    toastr.success(data.message);
                                 } else {
                                     Swal.fire(
                                         'Hmmmm...',

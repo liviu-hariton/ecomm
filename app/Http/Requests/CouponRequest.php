@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class CouponRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class CouponRequest extends FormRequest
     {
         return [
             'name' => 'required|max:200',
-            'code' => 'required|unique:coupons',
+            'code' => Request::input('new-coupon-form') === "1" ? 'required|unique:coupons' : 'required|max:200|required|unique:coupons,code,'.$this->route('coupon')->id,
             'qty' => 'required|integer',
             'max_use' => 'required|integer',
             'start_date' => 'required|date|before_or_equal:end_date',

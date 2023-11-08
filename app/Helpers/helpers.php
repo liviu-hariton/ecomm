@@ -56,5 +56,33 @@ function cartTotal()
         $total += ($cart_item->price + $cart_item->options->variants_amount) * $cart_item->qty;
     }
 
+    $cart_discount = cartDiscount();
+
+    if($cart_discount > 0) {
+        $total -= $cart_discount;
+    }
+
     return $total;
+}
+
+function cartDiscount()
+{
+    $discount = 0;
+
+    $cart_subtotal = cartSubtotal();
+
+    if(session()->has('coupon')) {
+        if(session()->get('coupon')->discount_type == 'fixed') {
+            $discount += session()->get('coupon')->discount_amount;
+        } else {
+            $discount += $cart_subtotal * session()->get('coupon')->discount_amount / 100;
+
+        }
+    }
+
+    if($discount > $cart_subtotal) {
+        $discount = $cart_subtotal;
+    }
+
+    return $discount;
 }

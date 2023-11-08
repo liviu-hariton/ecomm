@@ -137,7 +137,7 @@
                             </div>
 
                             <div class="card-footer">
-                                <button class="btn btn-success mr-1" type="submit">Create coupon <i class="fa fa-check-circle"></i></button>
+                                <button class="btn btn-success mr-1" type="submit">Update coupon <i class="fa fa-check-circle"></i></button>
                             </div>
                         </form>
                     </div>

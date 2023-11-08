@@ -21,6 +21,8 @@
                         <form method="post" action="{{ route('admin.coupons.store') }}" enctype="multipart/form-data">
                             @csrf
 
+                            <input type="hidden" name="new-coupon-form" id="new-coupon-form" value="1" />
+
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-6">
