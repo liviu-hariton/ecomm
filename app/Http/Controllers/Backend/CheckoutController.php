@@ -6,11 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\ShippingRule;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
+use Cart;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
+        if(Cart::content()->count() === 0) {
+            return redirect()->route('cart');
+        }
+
         return view('frontend.pages.checkout', [
             'addresses' => UserAddress::where('user_id', auth()->id())->get(),
             'shipping_rules' => ShippingRule::all()

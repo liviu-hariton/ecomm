@@ -2,10 +2,10 @@
 
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CheckoutController;
-use App\Http\Controllers\Backend\PaymentController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\FlashSaleController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\UserAddressController;
 use App\Http\Controllers\Frontend\UserDashboardController;
@@ -61,4 +61,11 @@ Route::prefix('user')->as('user.')->middleware(['auth', 'verified'])->group(func
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('checkout/submit', [CheckoutController::class, 'checkoutSubmit'])->name('checkout.submit');
     Route::get('payment', [PaymentController::class, 'index'])->name('payment');
+    Route::get('payment-success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+
+    Route::get('paypal/payment', [PaymentController::class, 'payWithPaypal'])->name('paypal.payment');
+    Route::get('paypal/success', [PaymentController::class, 'paypalSuccess'])->name('paypal.success');
+    Route::get('paypal/cancel', [PaymentController::class, 'paypalCancel'])->name('paypal.cancel');
+
+    Route::post('stripe/payment', [PaymentController::class, 'payWithStripe'])->name('stripe.payment');
 });

@@ -6,6 +6,8 @@ use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\FlashSaleController;
+use App\Http\Controllers\Backend\PaymentSettingsController;
+use App\Http\Controllers\Backend\PayPalSettingsController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProductImageGalleryController;
 use App\Http\Controllers\Backend\ProductVariantController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SettingsController;
 use App\Http\Controllers\Backend\ShippingRulesController;
 use App\Http\Controllers\Backend\SliderController;
+use App\Http\Controllers\Backend\StripeSettingsController;
 use App\Http\Controllers\Backend\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,3 +59,7 @@ Route::put('seo-settings-update', [SettingsController::class, 'updateSeo'])->nam
 
 Route::resource('coupons', CouponController::class);
 Route::resource('shipping-rules', ShippingRulesController::class);
+
+Route::get('payment-settings', [PaymentSettingsController::class, 'index'])->name('payment-settings.index');
+Route::resource('paypal-settings', PayPalSettingsController::class)->only(['update']);
+Route::resource('stripe-settings', StripeSettingsController::class)->only(['update']);
