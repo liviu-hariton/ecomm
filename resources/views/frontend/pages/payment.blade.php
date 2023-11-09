@@ -25,7 +25,7 @@
                                 <div class="row">
                                     <div class="col-xl-12 m-auto">
                                         <div class="wsus__payment_area">
-                                            <a href="{{ route('user.paypal.payment') }}" class="common_btn">Pay with PayPal&reg;</a>
+                                            <a href="{{ route('user.paypal.payment') }}" class="common_btn w-100 text-center">Pay with PayPal&reg;</a>
                                         </div>
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                                 <div class="row">
                                     <div class="col-xl-12 m-auto">
                                         <div class="wsus__payment_area">
-                                            Stripe&reg; is the faster, safer way to send money, make an online payment,
+                                            @include('frontend.pages.gateways.stripe')
                                         </div>
                                     </div>
                                 </div>

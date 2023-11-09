@@ -8,12 +8,16 @@ use App\Models\OrderProduct;
 use App\Models\PayPalSettings;
 use App\Models\Product;
 use App\Models\Settings;
+use App\Models\StripeSettings;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Cart;
+use Stripe\Charge;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
@@ -23,7 +27,9 @@ class PaymentController extends Controller
             return redirect()->route('user.checkout');
         }
 
-        return view('frontend.pages.payment');
+        return view('frontend.pages.payment', [
+            'stripe_settings' => StripeSettings::first(),
+        ]);
     }
 
     public function paymentSuccess()
@@ -193,5 +199,44 @@ class PaymentController extends Controller
         toastr()->error('Payment cancelled!');
 
         return redirect()->route('user.payment');
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws ApiErrorException
+     * @throws NotFoundExceptionInterface
+     */
+    public function payWithStripe(Request $request)
+    {
+        $stripe_settings = StripeSettings::first();
+
+        Stripe::setApiKey($stripe_settings->secret_key);
+
+        $charge = Charge::create([
+            'amount' => round((cartTotalWithShipping() * $stripe_settings->currency_rate), 2) * 100,
+            'currency' => $stripe_settings->currency,
+            'source' => $request->strike_token,
+            'description' => 'ecomm.test Stripe payment test',
+        ]);
+
+        if($charge->status == 'succeeded') {
+            $data = [
+                'payment_method' => 'Stripe',
+                'payment_status' => 1,
+                'transaction_id' => $charge->id,
+                'paid_amount' => round((cartTotalWithShipping() * $stripe_settings->currency_rate), 2),
+                'paid_currency' => $stripe_settings->currency
+            ];
+
+            $this->storeOrder($data);
+
+            $this->clearSession();
+
+            return redirect()->route('user.payment.success');
+        } else {
+            toastr()->error('Payment did not succeeded!');
+
+            return redirect()->route('user.payment');
+        }
     }
 }

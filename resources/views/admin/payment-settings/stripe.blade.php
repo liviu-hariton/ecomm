@@ -1,4 +1,4 @@
-<form method="post" action="" name="f-stripe-settings" id="f-stripe-settings" enctype="multipart/form-data">
+<form method="post" action="{{ route('admin.stripe-settings.update', 1) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -8,17 +8,100 @@
         </div>
 
         <div class="card-body">
-            <div class="form-group">
-                <label for="site_name">Site Name</label>
-                <input type="text" name="site_name" id="site_name" class="form-control" value="">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="client_id">Client ID</label>
+                        <input type="text" name="client_id" id="client_id" class="form-control" value="{{ old('client_id', $stripe_settings->client_id ?? '') }}">
 
-                @error('site_name')
-                <span class="text-danger text-small">{{ $message }}</span>
-                @enderror
+                        @error('client_id')
+                        <span class="text-danger text-small">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="secret_key">Secret Key</label>
+                        <input type="text" name="secret_key" id="secret_key" class="form-control" value="{{ old('secret_key', $stripe_settings->secret_key ?? '') }}">
+
+                        @error('secret_key')
+                        <span class="text-danger text-small">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" name="status" id="status">
+                            <option value="1" {{ !is_null($stripe_settings) && $stripe_settings->status === 1 ? 'selected="selected"' : '' }}>Active</option>
+                            <option value="0" {{ !is_null($stripe_settings) && $stripe_settings->status === 0 ? 'selected="selected"' : '' }}>Inactive</option>
+                        </select>
+
+                        @error('status')
+                        <span class="text-danger text-small">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="mode">Mode</label>
+                        <select class="form-control" name="mode" id="mode">
+                            <option value="live" {{ !is_null($stripe_settings) && $stripe_settings->mode === 'live' ? 'selected="selected"' : '' }}>Live</option>
+                            <option value="sandbox" {{ !is_null($stripe_settings) && $stripe_settings->mode === 'sandbox' ? 'selected="selected"' : '' }}>Sandbox</option>
+                        </select>
+
+                        @error('mode')
+                        <span class="text-danger text-small">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select class="form-control select2" name="country" id="country" style="width:100%;">
+                            @foreach(config('settings.countries') as $country)
+                                <option value="{{ $country }}" {{ !is_null($stripe_settings) && $stripe_settings->country === $country ? 'selected="selected"' : '' }}>{{ $country }}</option>
+                            @endforeach
+                            <option value=""></option>
+                        </select>
+
+                        @error('country')
+                        <span class="text-danger text-small">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="layout">Default currency</label>
+                        <select class="form-control select2" name="currency" id="currency" style="width:100%;">
+                            @foreach(config('settings.currencies_list') as $currency)
+                                <option value="{{ $currency['code'] }}" {{ !is_null($stripe_settings) && $stripe_settings->currency === $currency['code'] ? 'selected="selected"' : '' }}>{{ $currency['code'] }} - {{ $currency['name'] }} {{ $currency['symbol'] !== '' ? '('.$currency['symbol'].')' : '' }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('currency')
+                        <span class="text-danger text-small">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="currency_rate">Currency rate (per {{ $general_settings->currency_name }})</label>
+                        <input type="number" min="0.00" step=".01" name="currency_rate" id="currency_rate" class="form-control" value="{{ old('secret_key', $stripe_settings->currency_rate ?? '') }}">
+
+                        @error('currency_rate')
+                        <span class="text-danger text-small">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-footer">
-            <button type="submit" name="go-stripe" class="btn btn-success">Save <i class="fa fa-check-circle"></i></button>
+            <button type="submit" class="btn btn-success">Save <i class="fa fa-check-circle"></i></button>
         </div>
     </div>
 </form>

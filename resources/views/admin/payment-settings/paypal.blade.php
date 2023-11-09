@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label for="currency_rate">Currency rate (per USD)</label>
+                        <label for="currency_rate">Currency rate (per {{ $general_settings->currency_name }})</label>
                         <input type="number" min="0.00" step=".01" name="currency_rate" id="currency_rate" class="form-control" value="{{ old('secret_key', $paypal_settings->currency_rate ?? '') }}">
 
                         @error('currency_rate')
