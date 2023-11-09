@@ -35,7 +35,7 @@
                                 <div class="col-md-12 col-lg-12 col-xl-12">
                                     <div class="wsus__check_single_form">
                                         <h5>Additional Information</h5>
-                                        <textarea cols="3" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+                                        <textarea name="mentions" cols="3" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
                                     </div>
                                 </div>
                             </div>
